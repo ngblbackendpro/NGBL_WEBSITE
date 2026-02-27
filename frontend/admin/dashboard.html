@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="legal-pages.html?type=faq" class="nav-item">
+                <i class="fas fa-question-circle"></i>
+                FAQ
+                </a>
+
+                <a href="legal-pages.html?type=terms" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                Terms & Conditions
+                </a>
+
+                <a href="legal-pages.html?type=privacy" class="nav-item">
+                <i class="fas fa-shield-alt"></i>
+                Privacy Policy
+                </a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+                
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+
+
+                    <div class="notification-wrapper">
+                        <i class="fas fa-bell" id="notificationBell"></i>
+                        <span class="notification-count" id="notificationCount">0</span>
+
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div id="notificationList"></div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="user-menu">
+                        <span class="user-avatar">👤</span>
+                        <span class="user-name">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <section class="dashboard-content">
+                <h2>📊 Dashboard Overview</h2>
+                <p class="subtitle">All data is updated in real-time</p>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3>Experience Years</h3>
+                            <p class="stat-value" id="expYears">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3>Projects</h3>
+                            <p class="stat-value" id="projectCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-info">
+                            <h3>Offices</h3>
+                            <p class="stat-value" id="officeCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📖</div>
+                        <div class="stat-info">
+                            <h3>Total Blogs</h3>
+                            <p class="stat-value" id="blogCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3>Reviews</h3>
+                            <p class="stat-value" id="reviewCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🛠️</div>
+                        <div class="stat-info">
+                            <h3>Services</h3>
+                            <p class="stat-value" id="serviceCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card messages-card">
+                        <div class="stat-icon">📩</div>
+                        <div class="stat-info">
+                            <h3>Messages</h3>
+                            <p class="stat-value" id="contactCount">0</p>
+                        </div>
+
+                        <button id="downloadContacts" class="download-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Quick Links -->
+                <div class="quick-links">
+                    <h2>🚀 Quick Access</h2>
+                    <div class="links-grid">
+                        <a href="home-management.html" class="quick-link">
+                            <span class="icon">🏠</span>
+                            <span class="text">Edit Home Info</span>
+                        </a>
+                        <a href="work-section.html" class="quick-link">
+                            <span class="icon">🖼️</span>
+                            <span class="text">Manage Work</span>
+                        </a>
+                        <a href="brands.html" class="quick-link">
+                            <span class="icon">🏷️</span>
+                            <span class="text">Update Brands</span>
+                        </a>
+                        <a href="reviews.html" class="quick-link">
+                            <span class="icon">⭐</span>
+                            <span class="text">Manage Reviews</span>
+                        </a>
+                        <a href="blogs.html" class="quick-link">
+                            <span class="icon">📝</span>
+                            <span class="text">Publish Blogs</span>
+                        </a>
+                        <a href="team.html" class="quick-link">
+                            <span class="icon">👥</span>
+                            <span class="text">Update Team</span>
+                        </a>
+                        <a href="services.html" class="quick-link">
+                            <span class="icon">🛠️</span>
+                            <span class="text">Manage Services</span>
+                        </a>
+                        <a href="projects.html" class="quick-link">
+                            <span class="icon">📁</span>
+                            <span class="text">Control Projects</span>
+                        </a>
+
+                        <a href="legal-pages.html?type=faq" class="quick-link">
+                            <span class="icon"><i class="fas fa-question-circle"></i></span>
+                            <span class="text">FAQ</span>
+                        </a>
+
+                        <a href="legal-pages.html?type=terms" class="quick-link">
+                            <span class="icon"><i class="fas fa-file-alt"></i></span>
+                            <span class="text">Terms & Conditions</span>
+                        </a>
+
+                        <a href="legal-pages.html?type=privacy" class="quick-link">
+                            <span class="icon"><i class="fas fa-shield-alt"></i></span>
+                            <span class="text">Privacy Policy</span>
+                        </a>
+                    </div>
+                    
+                </div>
+
+                <!-- Features Info -->
+                <div class="features-section">
+                    <h2>⚙️ Easy Control Panel</h2>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <span class="feature-icon">✔️</span>
+                            <span class="feature-text">One-Click Updates</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✔️</span>
+                            <span class="feature-text">Mobile Friendly</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✔️</span>
+                            <span class="feature-text">Secure Data</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✔️</span>
+                            <span class="feature-text">Cloud Backup</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

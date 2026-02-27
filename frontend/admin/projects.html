@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item active">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Project Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">📁 Manage upcoming and completed projects</p>
+
+                <!-- Upcoming Projects Section -->
+                <div class="form-section">
+                    <h2>🚀 Upcoming Projects</h2>
+                    <form id="upcomingProjectForm" class="form-group">
+                        <input type="text" id="upcomingTitle" placeholder="Project Title" required>
+                        <input type="text" id="upcomingHeading" placeholder="Project Heading" required>
+                        <textarea id="upcomingDescription" placeholder="Project Description" rows="5" required></textarea>
+                        <input type="date" id="upcomingDate" placeholder="Expected Date" required>
+                        <label class="file-input-label" id="upcomingFileLabel">
+                            📤 Upload Project Photo
+                            <input type="file" id="upcomingImage" accept="image/*" required>
+                        </label>
+
+                        <div id="upcomingPreview" style="display:none; margin-top:10px;">
+                            <img id="upcomingPreviewImg"
+                                style="width:150px; height:150px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                <div style="margin-top:8px;">
+                                <button type="button" id="upcomingChangeBtn" class="btn">✏ Change Image</button>
+                                <button type="button" id="upcomingCancelBtn" class="btn-delete">✕ Cancel</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn">✔ Add Upcoming Project</button>
+                    </form>
+
+                    <div id="upcomingList" class="items-container" style="margin-top: 20px;">
+                        <p class="empty-message">No upcoming projects added yet.</p>
+                    </div>
+                </div>
+
+                <!-- Completed Projects Section -->
+                <div class="form-section">
+                    <h2>✅ Completed Projects</h2>
+                    <form id="completedProjectForm" class="form-group">
+                        <input type="text" id="completedTitle" placeholder="Project Title" required>
+                        <input type="text" id="completedHeading" placeholder="Project Heading" required>
+                        <textarea id="completedDescription" placeholder="Project Description" rows="5" required></textarea>
+                        <input type="date" id="completedDate" placeholder="Completion Date" required>
+                        <input type="url" id="completedLink" placeholder="Project Link" required>
+                        <label class="file-input-label" id="completedFileLabel">
+                        📤 Upload Project Photo
+                        <input type="file" id="completedImage" accept="image/*" required>
+                    </label>
+
+                    <div id="completedPreview" style="display:none; margin-top:10px;">
+                        <img id="completedPreviewImg"
+                            style="width:150px; height:150px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                <div style="margin-top:8px;">
+                            <button type="button" id="completedChangeBtn" class="btn">✏ Change Image</button>
+                            <button type="button" id="completedCancelBtn" class="btn-delete">✕ Cancel</button>
+                        </div>
+                    </div>
+
+                        <button type="submit" class="btn">✔ Add Completed Project</button>
+                    </form>
+
+                    <div id="completedList" class="items-container" style="margin-top: 20px;">
+                        <p class="empty-message">No completed projects added yet.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+</html>

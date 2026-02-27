@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item active">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Services Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">🛠️ All services can be controlled from one place</p>
+
+                <!-- Add Service -->
+                <div class="form-section">
+                    <h2>➕ Add New Service</h2>
+                    <form id="addServiceForm" class="form-group">
+                        <input type="text" id="serviceTitle" placeholder="Service Title" required>
+                        <textarea id="serviceDescription" placeholder="Service Description" rows="5" required></textarea>
+                        <input type="text" id="servicePrice" placeholder="Service Price (optional)">
+                        <input type="text" id="serviceDuration" placeholder="duration">
+                        <input type="text" id="serviceKeywords" placeholder="Keywords (comma-separated, optional)">
+                        <input type="text" id="serviceCategory" placeholder="add your category">
+                        <div id="imagePreview" style="display: none; margin: 15px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">📸 Image Preview:</label>
+                            <img id="previewImage" style="max-width: 300px; max-height: 300px; border: 2px solid #ddd; border-radius: 8px;" alt="Preview">
+                            <button type="button" id="uploadImageBtn" class="btn" style="margin-top: 10px;">✔ Upload Image</button>
+                            <button type="button" id="cancelImageBtn" class="btn" style="margin-top: 10px; background-color: #dc3545;">✕ Cancel</button>
+                        </div>
+                        <label class="file-input-label" id="fileInputLabel">
+                            📤 Select Service Image
+                            <input type="file" id="serviceImage" accept="image/*">
+                        </label>
+                        <button type="submit" class="btn">✔ Add Service</button>
+                    </form>
+                </div>
+
+                <!-- Services List -->
+                <div class="form-section">
+                    <h2>📋 Current Services</h2>
+                    <div id="servicesList" class="items-container">
+                        <p class="empty-message">No services added yet. Add your first service above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/services.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .btn-secondary {
+    background: rgba(34, 197, 94, 0.95);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover,
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item active">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Blog Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">📝 Admins can publish blogs without help from developers</p>
+
+                <!-- Add Blog -->
+                <div class="form-section">
+                    <h2>➕ Add New Blog Post</h2>
+                    <form id="addBlogForm" class="form-group">
+                        <input type="text" id="blogTitle" placeholder="Blog Title" required>
+                        <input type="text" id="blogAuthor" placeholder="Author Name" required>
+                        <input type="date" id="blogDate" required>
+                        <input type="text" id="blogCategory" placeholder="Category (e.g., Technology, Business)" required>
+                        <textarea id="blogDescription" placeholder="Blog Description/Preview (short)" rows="3" required></textarea>
+                        <textarea id="blogContent" placeholder="Full Blog Content" rows="10" required></textarea>
+                        <input type="text" id="blogTags" placeholder="Tags (comma separated, optional)">
+                        <label class="file-input-label" id="blogFileLabel">
+                            📤 Upload Featured Image
+                            <input type="file" id="blogImage" accept="image/*" required>
+                        </label>
+
+                        <!-- Image Preview -->
+                        <div id="blogImagePreview" style="display:none; margin-top:10px;">
+                            <img id="blogPreviewImg"
+                                style="width:150px; height:150px; object-fit:cover; border-radius:8px; border:1px solid #ddd;" />
+
+                            <div style="margin-top:10px;">
+                                <button type="button" id="changeBlogImage" class="btn-secondary">🔁 Change</button>
+                                <button type="button" id="cancelBlogImage" class="btn-danger">✖️ Cancel</button>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn">✔ Publish Blog</button>
+                    </form>
+                </div>
+
+                <!-- Blogs List -->
+                <div class="form-section">
+                    <h2>📋 Published Blogs</h2>
+                    <div id="blogsList" class="items-container">
+                        <p class="empty-message">No blogs published yet. Publish your first blog above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/blogs.js"></script>
+</body>
+</html>

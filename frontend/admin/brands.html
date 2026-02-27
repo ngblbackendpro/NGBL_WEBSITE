@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brands - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item active">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Brand Section Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">🏷️ Brand logos and photos can be added or removed anytime</p>
+
+                <!-- Add Brand -->
+            <div class="form-section">
+                    <h2>➕ Add New Brand</h2>
+                    <form id="addBrandForm" class="form-group">
+                        <input type="text" id="brandName" placeholder="Brand Name" required>
+                        <textarea id="brandDescription" placeholder="Brand Description (optional)" rows="3"></textarea>
+                        <div id="brandImagePreview" style="display: none; margin: 15px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">🖼️ Image Preview:</label>
+                            <img id="brandPreviewImg" style="max-width: 300px; max-height: 300px; border: 2px solid #ddd; border-radius: 8px;" alt="Preview">
+                            <button type="button" id="brandUploadBtn" class="btn" style="margin-top: 10px;">✔ Upload Logo</button>
+                            <button type="button" id="brandCancelBtn" class="btn" style="margin-top: 10px; background-color: #dc3545;">✕ Cancel</button>
+                        </div>
+                        <label class="file-input-label" id="brandFileLabel">
+                            📤 Select Logo/Image
+                            <input type="file" id="brandImage" accept="image/*" required>
+                        </label>
+                        <button type="submit" class="btn">✔ Add Brand</button>
+                    </form>
+                </div>
+
+                <!-- Brands List -->
+                <div class="form-section">
+                    <h2>📋 Current Brands</h2>
+                    <div id="brandsList" class="items-container">
+                        <p class="empty-message">No brands added yet. Add your first brand above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/brands.js"></script>
+</body>
+</html>

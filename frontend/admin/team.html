@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Members - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+
+     <style>
+        .btn-secondary {
+    background: rgba(34, 197, 94, 0.95);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover,
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item active">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Team Members Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">👥 Team members can be updated anytime</p>
+
+                <!-- Add Team Member -->
+                <div class="form-section">
+                    <h2>➕ Add Team Member</h2>
+                    <form id="addTeamForm" class="form-group">
+                        <input type="text" id="memberName" placeholder="Full Name" required>
+                        <input type="text" id="memberPosition" placeholder="Position/Job Title" required>
+                        <textarea id="memberDescription" placeholder="About Team Member" rows="4" required></textarea>
+                        <div class="form-row">
+                            <input type="email" id="memberEmail" placeholder="Email Address (optional)">
+                            <input type="tel" id="memberPhone" placeholder="Phone Number (optional)">
+                        </div>
+                        <input type="url" id="memberLinkedin" placeholder="LinkedIn Profile (optional)">
+                        <label class="file-input-label">
+                            📷 Upload Profile Photo
+                            <input type="file" id="memberImage" accept="image/*" required>
+                        </label>
+
+                                 <!-- Image Preview -->
+                            <div id="teamImagePreview" style="display:none; margin-top:10px;">
+                                    <img id="teamPreviewImg" 
+                                    style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:1px solid #ddd;" />
+                                        <div style="margin-top:10px;">
+                                    <button type="button" id="changeTeamImage" class="btn-secondary">🔁 Change</button>
+                                    <button type="button" id="cancelTeamImage" class="btn-danger">✖️ Cancel</button>
+                                </div>
+                            </div>
+                        <button type="submit" class="btn">✔ Add Member</button>
+                    </form>
+                </div>
+
+                <!-- Team Members List -->
+                <div class="form-section">
+                    <h2>📋 Team Members</h2>
+                    <div id="teamList" class="items-container">
+                        <p class="empty-message">No team members added yet. Add your first member above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/team.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Management - Admin Panel</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎛️ Admin Panel</h2>
+                <button class="toggle-sidebar">☰</button>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="home-management.html" class="nav-item active">🏠 Home Management</a>
+                <a href="work-section.html" class="nav-item">🖼️ Work Section</a>
+                <a href="brands.html" class="nav-item">🏷️ Brands</a>
+                <a href="reviews.html" class="nav-item">⭐ Reviews</a>
+                <a href="blogs.html" class="nav-item">📝 Blogs</a>
+                <a href="team.html" class="nav-item">👥 Team Members</a>
+                <a href="services.html" class="nav-item">🛠️ Services</a>
+                <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="header-left">
+                    <h1>Home Page Management</h1>
+                </div>
+                <div class="header-right">
+                    <span id="currentDate" class="current-date"></span>
+                </div>
+            </header>
+
+            <section class="dashboard-content">
+                <p class="subtitle">📌 Edit important homepage information from here</p>
+
+                <!-- Experience Years Section -->
+                <div class="form-section">
+                    <h2>📅 Experience Years</h2>
+                    <form id="experienceForm" class="form-group">
+                        <input type="number" id="expYears" placeholder="Enter experience years" min="0" required>
+                        <button type="submit" class="btn">✔ Update Experience</button>
+                    </form>
+                </div>
+
+                <!-- Projects Count Section -->
+                <div class="form-section">
+                    <h2>🎯 Total Projects</h2>
+                    <form id="projectsForm" class="form-group">
+                        <input type="number" id="projectsCount" placeholder="Enter number of projects" min="0" required>
+                        <button type="submit" class="btn">✔ Update Projects</button>
+                    </form>
+                </div>
+
+                <!-- Office Locations Section -->
+                <div class="form-section">
+                    <h2>🏢 Office Locations</h2>
+                    <form id="officeForm" class="form-group">
+                        <input type="text" id="officeLocation" placeholder="Enter office location" required>
+                        <input type="text" id="officeAddress" placeholder="Enter full address" required>
+                        <input type="email" id="officeEmail" placeholder="Enter email" required>
+                        <input type="tel" id="officePhone" placeholder="Enter phone number" required>
+                        <button type="submit" class="btn">✔ Add Office</button>
+                    </form>
+
+                    <div id="officesList" class="list-section">
+                        <h3>Current Offices:</h3>
+                        <div id="officesContainer" class="items-container"></div>
+                    </div>
+                </div>
+
+                <!-- Company Info Section -->
+                <div class="form-section">
+                    <h2>🏢 Company Contact Info</h2>
+                    <form id="companyForm" class="form-group">
+                        <input type="tel" id="companyPhone" placeholder="Company Phone" required>
+                        <input type="email" id="companyEmail" placeholder="Company Email" required>
+                        <textarea id="companyAddress" placeholder="Company Address" required></textarea>
+                        <button type="submit" class="btn">✔ Update Company Info</button>
+                    </form>
+                </div>
+
+                <!-- Social Links Section -->
+                <div class="form-section">
+                    <h2>🔗 Social Media Links</h2>
+                    <form id="socialForm" class="form-group">
+                        <input type="url" id="facebook" placeholder="Facebook URL" required>
+                        <input type="url" id="twitter" placeholder="Twitter URL" required>
+                        <input type="url" id="linkedin" placeholder="LinkedIn URL" required>
+                        <input type="url" id="instagram" placeholder="Instagram URL" required>
+                        <input type="url" id="youtube" placeholder="YouTube URL" required>
+                        <button type="submit" class="btn">✔ Update Social Links</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/home-management.js"></script>
+</body>
+</html>

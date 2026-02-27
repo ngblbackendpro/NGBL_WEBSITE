@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Legal Pages</title>
+
+  <link rel="stylesheet" href="css/legal.css">
+  <link rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+<div class="admin-container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Admin Panel</h2>
+    </div>
+
+    <div class="nav-menu">
+      <a href="dashboard.html" class="nav-item">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+
+      <a href="legal-pages.html?type=faq" class="nav-item">
+        <i class="bi bi-question-circle"></i> FAQ
+      </a>
+
+      <a href="legal-pages.html?type=terms" class="nav-item">
+        <i class="bi bi-file-earmark-text"></i> Terms & Conditions
+      </a>
+
+      <a href="legal-pages.html?type=privacy" class="nav-item">
+        <i class="bi bi-shield-lock"></i> Privacy Policy
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <div class="top-bar">
+      <div class="header-left">
+        <h1 id="pageTitle">Edit Page</h1>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <div class="form-section">
+        <h2>Content Editor</h2>
+
+        <div class="form-group">
+          <textarea id="pageContent" rows="18"
+            placeholder="Write your content here..."></textarea>
+        </div>
+
+        <button class="btn" onclick="savePage()">
+          Save Changes
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/legal-pages.js"></script>
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+  CKEDITOR.replace('pageContent');
+</script>
+</body>
+</html>

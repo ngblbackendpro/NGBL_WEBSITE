@@ -1,0 +1,113 @@
+/* Layout */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background: linear-gradient(180deg, #2c3e50, #34495e);
+    color: white;
+    padding-top: 20px;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+.nav-item {
+    padding: 12px 20px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-item i {
+    font-size: 18px;
+}
+
+/* Main */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-bar {
+    background: white;
+    padding: 20px 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.top-bar h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* Content */
+.dashboard-content {
+    padding: 30px;
+}
+
+.form-section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.form-section h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Button */
+.btn {
+    margin-top: 15px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+}
