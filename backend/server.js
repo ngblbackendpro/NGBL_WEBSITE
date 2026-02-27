@@ -21,8 +21,21 @@ const connectDB = require("./config/db");
 connectDB();
 
 
+const allowedOrigins = [
+  process.env.WEBSITE_URL || "https://ngbl.in",
+  process.env.ADMIN_URL || "https://adminpanel.ngbl.in",
+  "http://localhost:5000",  // optional for local testing
+  "http://localhost:5500"
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 
