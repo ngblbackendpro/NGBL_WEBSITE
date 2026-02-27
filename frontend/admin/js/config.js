@@ -1,5 +1,6 @@
 window.ADMIN_CONFIG = {
-    BASE_URL: "http://localhost:5000",
+    // BASE_URL: "http://localhost:5000",
+    BASE_URL: "https://ngbl-website.onrender.com",
     API: {
         HOME: "/api/home",
         BRANDS: "/api/brands",
