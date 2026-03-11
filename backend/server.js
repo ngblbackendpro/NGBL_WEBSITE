@@ -25,14 +25,13 @@ connectDB();
 const allowedOrigins = [
   process.env.WEBSITE_URL || "https://ngbl.in",
   process.env.ADMIN_URL || "https://adminpanel.ngbl.in",
-  "http://localhost:5000",  // optional for local testing
   "http://localhost:5500",
   "http://127.0.0.1:5500"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    console.log("Request Origin:", origin);
+   
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {

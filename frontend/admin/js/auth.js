@@ -27,7 +27,7 @@ loginForm.addEventListener("submit", async function (e) {
             showMessage("Login Success", "Success")
             setTimeout(()=>{
                 window.location.href = "dashboard.html"
-            })
+            }, 1000)
 
         }else{
             showMessage(data.message, "error")

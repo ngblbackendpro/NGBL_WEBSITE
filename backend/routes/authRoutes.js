@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router()
-const { loginAdmin } = require('../controllers/authController')
+const authMiddleware = require("../middleware/authMiddleware");
+const { loginAdmin, changePassword } = require('../controllers/authController')
 
 router.post('/login', loginAdmin)
+router.put("/change-password", authMiddleware, changePassword);
 
 module.exports = router;

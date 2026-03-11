@@ -5,11 +5,7 @@ const { BASE_URL, API } = window.ADMIN_CONFIG;
 const CONTACT_API = BASE_URL + API.CONTACT;
 const DASHBOARD_API = BASE_URL + API.DASHBOARD;
 
-const token = localStorage.getItem("token");
 
-if (!token) {
-    window.location.href = "index.html";
-}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -31,9 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function checkLogin() {
-    const isLoggedIn = localStorage.getItem('adminLoggedIn');
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        window.location.href = 'index.html';
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "index.html";
     }
 }
 
@@ -106,20 +103,38 @@ function setupSidebarToggle() {
 
 // Logout function
 function logout() {
-    localStorage.removeItem('adminLoggedIn');
-    localStorage.removeItem('adminUser');
-    window.location.href = 'index.html';
+
+    const confirmLogout = confirm("Are you sure you want to logout?");
+
+    if (confirmLogout) {
+
+        // remove all stored auth data
+        localStorage.removeItem("token");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminUser");
+
+        // redirect to login page
+        window.location.href = "index.html";
+    }
 }
 
+
 // Setup logout button for all pages
-document.addEventListener('DOMContentLoaded', function () {
-    const logoutLinks = document.querySelectorAll('.logout');
+document.addEventListener("DOMContentLoaded", function () {
+
+    const logoutLinks = document.querySelectorAll(".logout");
+
     logoutLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
+
+        link.addEventListener("click", function (e) {
+
             e.preventDefault();
             logout();
+
         });
+
     });
+
 });
 
 // Utility function to generate unique IDs
@@ -288,6 +303,71 @@ document.addEventListener("DOMContentLoaded", function () {
             window.open(CONTACT_API + "/download", "_blank");
         });
     }
+});
+
+
+// Change Password Modal
+const modal = document.getElementById("passwordModal");
+const openBtn = document.getElementById("changePasswordBtn");
+const closeBtn = document.querySelector(".close-modal");
+
+openBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    modal.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", function(){
+    modal.style.display = "none";
+});
+
+window.addEventListener("click", function(e){
+    if(e.target === modal){
+        modal.style.display = "none";
+    }
+});
+
+
+document.getElementById("changePasswordForm")
+.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const oldPassword = document.getElementById("oldPassword").value;
+const newPassword = document.getElementById("newPassword").value;
+const confirmPassword = document.getElementById("confirmPassword").value;
+
+if(newPassword !== confirmPassword){
+    alert("Passwords do not match");
+    return;
+}
+
+try{
+
+const response = await fetch(BASE_URL + "/api/auth/change-password",{
+    method:"PUT",
+    headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + localStorage.getItem("token")
+    },
+    body:JSON.stringify({
+        oldPassword,
+        newPassword
+    })
+});
+
+const data = await response.json();
+
+if(response.ok){
+    alert("Password Updated Successfully");
+    modal.style.display = "none";
+}else{
+    alert(data.message);
+}
+
+}catch(err){
+    alert("Server Error");
+}
+
 });
 
 })();

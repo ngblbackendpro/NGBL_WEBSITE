@@ -36,11 +36,17 @@
                 Terms & Conditions
                 </a>
 
+
                 <a href="legal-pages.html?type=privacy" class="nav-item">
                 <i class="fas fa-shield-alt"></i>
                 Privacy Policy
                 </a>
-                <a href="index.html" class="nav-item logout">🚪 Logout</a>
+
+                <a href="#" id="changePasswordBtn" class="nav-item">
+                <i class="fa-solid fa-key"></i>
+                Change Password
+                </a>
+                <a href="#" class="nav-item logout">🚪 Logout</a>
                 
             </nav>
         </aside>
@@ -223,6 +229,43 @@
             </section>
         </main>
     </div>
+
+
+    <div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+
+    <h2>Change Password</h2>
+
+    <form id="changePasswordForm">
+
+      <input 
+        type="password" 
+        id="oldPassword" 
+        placeholder="Old Password"
+        required
+      >
+
+      <input 
+        type="password" 
+        id="newPassword" 
+        placeholder="New Password"
+        required
+      >
+
+      <input 
+        type="password" 
+        id="confirmPassword" 
+        placeholder="Confirm New Password"
+        required
+      >
+
+      <button type="submit">Update Password</button>
+
+    </form>
+
+  </div>
+</div>
 
     <script src="js/config.js"></script>
     <script src="js/dashboard.js"></script>
