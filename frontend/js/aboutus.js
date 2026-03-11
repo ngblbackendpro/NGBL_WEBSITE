@@ -82,24 +82,10 @@ const AboutUsModule = {
         const animatedElements = document.querySelectorAll(
             ".team-card, .value-card, .about-section"
         );
-
-        const observer = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = "1";
-                        entry.target.style.transform = "translateY(0)";
-                        entry.target.style.transition = "all 0.6s ease";
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
         animatedElements.forEach(el => {
-            el.style.opacity = "0";
-            el.style.transform = "translateY(40px)";
-            observer.observe(el);
+            if (!el.hasAttribute("data-animate")) {
+                el.setAttribute("data-animate", "");
+            }
         });
     },
 

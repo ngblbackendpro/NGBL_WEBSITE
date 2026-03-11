@@ -25,11 +25,13 @@ const allowedOrigins = [
   process.env.WEBSITE_URL || "https://ngbl.in",
   process.env.ADMIN_URL || "https://adminpanel.ngbl.in",
   "http://localhost:5000",  // optional for local testing
-  "http://localhost:5500"
+  "http://localhost:5500",
+  "http://127.0.0.1:5500"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log("Request Origin:", origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -43,6 +45,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
+app.get("/ping", (req, res) => {
+  res.status(200).send("Server is alive");
+});
+
 app.use("/api/blogs", blogRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/services", serviceRoutes);
@@ -54,6 +60,7 @@ app.use('/api/home', homeRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/legal", legalRoutes);
+
 
 
 app.listen(port, ()=>{

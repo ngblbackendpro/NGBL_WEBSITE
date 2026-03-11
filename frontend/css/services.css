@@ -487,6 +487,14 @@
     line-height: 1.8;
 }
 
+.services-cta .btn,
+.services-cta .btn:link,
+.services-cta .btn:visited,
+.services-cta .btn:hover,
+.services-cta .btn:focus {
+    text-decoration: none;
+}
+
 /* Legacy projects-hero styles removed - now using .about-hero from HTML */
 
 /* ==========================================

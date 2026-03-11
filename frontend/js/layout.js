@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.body.classList.add("page-enter", "motion-enhanced");
+    document.body.classList.add("motion-enhanced");
 
     loadComponent("header-container", "components/header.html");
     loadComponent("footer-container", "components/footer.html");
@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initScrollAnimations();
     initNavbarScrollState();
     initAnchorSmoothScroll();
+    initPageTransitions();
     sanitizeHomeHashOnLoad();
 
     initScrollProgress();
@@ -36,18 +37,38 @@ window.addEventListener("pageshow", function () {
 });
 
 function loadComponent(id, file) {
+    const target = document.getElementById(id);
+    if (!target) {
+        return;
+    }
+
+    const cacheKey = `component-cache:${file}`;
+    const cachedMarkup = window.sessionStorage ? sessionStorage.getItem(cacheKey) : null;
+
+    const applyComponent = (markup) => {
+        target.innerHTML = markup;
+
+        if (id === "footer-container" && typeof loadHomeDataFromAPI === "function") {
+            loadHomeDataFromAPI();
+        }
+
+        refreshMotionEnhancements();
+        if (id === "header-container") {
+            setActiveLink();
+        }
+    };
+
+    if (cachedMarkup) {
+        applyComponent(cachedMarkup);
+        return;
+    }
+
     fetch(file)
         .then(response => response.text())
         .then(data => {
-            document.getElementById(id).innerHTML = data;
-
-            if (id === "footer-container" && typeof loadHomeDataFromAPI === "function") {
-                loadHomeDataFromAPI();
-            }
-
-            refreshMotionEnhancements();
-            if (id === "header-container") {
-                setActiveLink();
+            applyComponent(data);
+            if (window.sessionStorage) {
+                sessionStorage.setItem(cacheKey, data);
             }
         })
         .catch(error => console.error(error));
@@ -100,8 +121,9 @@ function sanitizeHomeHashOnLoad() {
         return;
     }
 
+    // Keep hash targets (e.g., index.html#contact) so deep links from other pages work.
     if (window.location.hash) {
-        history.replaceState(null, "", window.location.pathname + window.location.search);
+        return;
     }
 
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -137,6 +159,10 @@ function initAnchorSmoothScroll() {
 }
 
 function initPreloader() {
+    if (!isHomePage() || window.location.hash) {
+        return;
+    }
+
     if (document.getElementById("page-preloader")) {
         return;
     }
@@ -175,12 +201,16 @@ function hidePreloader() {
                 preloader.parentNode.removeChild(preloader);
             }
         }, 300);
-    }, 1000);
+    }, 450);
 }
 
 function initScrollAnimations() {
+    if (window.__scrollAnimationsBound) {
+        return;
+    }
+
     const candidates = document.querySelectorAll(
-        "section, .section-header, .service-card, .service-card-modern, .work-item, .stat-card, .review-card, .brand-card, .value-card, .team-card, .blog-card, .project-card"
+        "section, .section-header, .service-card, .service-card-modern, .work-item, .stat-card, .review-card, .brand-card, .value-card, .team-card, .blog-card, .project-card, .domain-card"
     );
 
     candidates.forEach((el, index) => {
@@ -191,16 +221,18 @@ function initScrollAnimations() {
         const parent = el.parentElement;
         if (parent) {
             const siblingSet = parent.querySelectorAll(
-                ".service-card, .service-card-modern, .work-item, .stat-card, .review-card, .brand-card, .value-card, .team-card, .blog-card, .project-card"
+                ".service-card, .service-card-modern, .work-item, .stat-card, .review-card, .brand-card, .value-card, .team-card, .blog-card, .project-card, .domain-card"
             );
 
             if (siblingSet.length > 1) {
                 const siblingIndex = Array.from(siblingSet).indexOf(el);
                 if (siblingIndex >= 0) {
-                    el.style.transitionDelay = `${Math.min(siblingIndex, 6) * 70}ms`;
+                    const stagger = isHomePage() ? 0 : 55;
+                    el.style.setProperty("--reveal-delay", `${Math.min(siblingIndex, 6) * stagger}ms`);
                 }
             } else {
-                el.style.transitionDelay = `${Math.min(index, 4) * 40}ms`;
+                const stagger = isHomePage() ? 0 : 35;
+                el.style.setProperty("--reveal-delay", `${Math.min(index, 5) * stagger}ms`);
             }
         }
     });
@@ -219,10 +251,59 @@ function initScrollAnimations() {
                 }
             });
         },
-        { threshold: 0.15 }
+        isHomePage()
+            ? { threshold: 0.03, rootMargin: "0px 0px -2% 0px" }
+            : { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
 
     candidates.forEach((el) => observer.observe(el));
+    window.__scrollAnimationsBound = true;
+}
+
+function initPageTransitions() {
+    if (window.__pageTransitionBound) {
+        return;
+    }
+
+    document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link) {
+            return;
+        }
+
+        const href = link.getAttribute("href") || "";
+        if (!href || href.startsWith("#") || link.target === "_blank" || link.hasAttribute("download")) {
+            return;
+        }
+
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+        }
+
+        let destination;
+        try {
+            destination = new URL(href, window.location.href);
+        } catch (error) {
+            return;
+        }
+
+        if (destination.origin !== window.location.origin) {
+            return;
+        }
+
+        if (destination.href === window.location.href) {
+            return;
+        }
+
+        event.preventDefault();
+        document.body.classList.add("page-leaving");
+
+        window.setTimeout(() => {
+            window.location.href = destination.href;
+        }, 210);
+    });
+
+    window.__pageTransitionBound = true;
 }
 
 function initNavbarScrollState() {
@@ -282,7 +363,7 @@ function initScrollProgress() {
 }
 
 function initTextMaskReveal() {
-    if (isMotionReduced()) {
+    if (isMotionReduced() || isHomePage()) {
         return;
     }
 
@@ -513,7 +594,7 @@ function initParallaxDepth() {
 }
 
 function initCursorGlow() {
-    if (!isPublicPage() || !isDesktopMotionAllowed()) {
+    if (!isPublicPage() || !isDesktopMotionAllowed() || isHomePage()) {
         return;
     }
 

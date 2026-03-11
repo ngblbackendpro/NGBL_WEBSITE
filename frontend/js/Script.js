@@ -6,6 +6,7 @@ const { BASE_URL, API } = window.APP_CONFIG;
 
  
 
+
 function initLazyLoading() {
     if (!('IntersectionObserver' in window)) {
         const images = document.querySelectorAll('img[loading="lazy"]');
@@ -886,3 +887,6 @@ async function loadWorksFromAPI() {
 }
 
 })();
+
+
+

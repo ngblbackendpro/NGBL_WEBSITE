@@ -853,11 +853,22 @@ body {
 
 body.page-enter {
     opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    filter: blur(0.3px);
 }
 
 body.page-ready {
     opacity: 1;
-    transition: opacity 0.5s ease;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+    transition: opacity 0.34s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.34s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.24s ease-out;
+}
+
+body.page-leaving {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    filter: blur(0.35px);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), filter 0.16s ease-out;
 }
 
 #scroll-progress {
@@ -956,18 +967,7 @@ body.light-mode .title-underline.gradient {
 }
 
 
-/* Smooth transitions for theme changes */
-
-body * {
-    transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
-}
-
-
-/* Exclude animation elements from transition */
-
-body *:not(.slider-slide):not(.work-item img):not(.home-slider img):not(.swiper-slide img) {
-    transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
-}
+/* Avoid global transition rules to prevent page flicker and repaint-heavy rendering. */
 
 
 /* Animations */
@@ -1035,9 +1035,12 @@ body *:not(.slider-slide):not(.work-item img):not(.home-slider img):not(.swiper-
     position: sticky;
     top: 0;
     z-index: 100;
-    animation: fadeInDown 0.8s ease;
     backdrop-filter: blur(10px);
     transition: background-color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, backdrop-filter 0.45s ease;
+}
+
+#header-container {
+    min-height: 80px;
 }
 
 .header.is-scrolled {
@@ -1073,7 +1076,6 @@ body *:not(.slider-slide):not(.work-item img):not(.home-slider img):not(.swiper-
 
 .logo {
     flex-shrink: 0;
-    animation: slideInLeft 0.8s ease;
     transition: transform 0.3s ease;
 }
 
@@ -1095,7 +1097,6 @@ body *:not(.slider-slide):not(.work-item img):not(.home-slider img):not(.swiper-
     flex-grow: 1;
     display: flex;
     justify-content: flex-end;
-    animation: slideInRight 0.8s ease;
 }
 
 .nav-menu {
@@ -1189,6 +1190,7 @@ body *:not(.slider-slide):not(.work-item img):not(.home-slider img):not(.swiper-
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+    text-decoration: none !important;
 }
 
 .ngbl-box::before {
@@ -1883,14 +1885,17 @@ body.text-reveal-enabled[data-page="home"] .hero-buttons {
 
 [data-animate] {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transform: translate3d(0, 18px, 0) scale(0.996);
+    filter: blur(0.25px);
+    transition: opacity 0.46s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.26s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
     will-change: opacity, transform;
 }
 
 [data-animate].is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
 }
 
 .parallax-layer {
@@ -2843,12 +2848,14 @@ body.light-mode .about-slider img {
     .tilt-active,
     .parallax-layer,
     .text-mask-reveal .reveal-word,
-    body.motion-enhanced .section-header .title-underline {
+    body.motion-enhanced .section-header .title-underline,
+    [data-animate] {
         transition: none !important;
         animation: none !important;
         transform: none !important;
         clip-path: none !important;
         opacity: 1 !important;
+        filter: none !important;
     }
 }
 
