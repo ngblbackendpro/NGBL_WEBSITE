@@ -1,5 +1,5 @@
 const Admin = require('../models/Auth')
-const bcypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 exports.loginAdmin = async (req, res) => {
@@ -20,7 +20,7 @@ exports.loginAdmin = async (req, res) => {
             username: admin.username
         },
         process.env.JWT_SECRET,
-        {expriresIn: '1d'}
+        { expiresIn: '1d' }
     );
 
         res.json({success:true, token})

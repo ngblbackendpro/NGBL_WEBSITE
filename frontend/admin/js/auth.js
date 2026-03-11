@@ -1,14 +1,15 @@
 (function () {
 
-const { BASE_URL } = window.APP_CONFIG;
 
-loginForm.addEventListner("submit", async function (e) {
+const { BASE_URL } = window.ADMIN_CONFIG;
+
+loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
-    const username = document.getElementById("username")
-    const password = document.getElementById("password")
+    const username = document.getElementById("username").value
+    const password = document.getElementById("password").value
 
     try{
-        const response = await fetch(BASE_URL + "api/auth/login", {
+        const response = await fetch(BASE_URL + "/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -25,7 +26,7 @@ loginForm.addEventListner("submit", async function (e) {
             localStorage.setItem("token", data.token)
             showMessage("Login Success", "Success")
             setTimeout(()=>{
-                window.location.href = getDashboardStats.html
+                window.location.href = "dashboard.html"
             })
 
         }else{

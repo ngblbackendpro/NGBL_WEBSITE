@@ -1,9 +1,15 @@
-
+(function () {
 // Dashboard Shared JavaScript
 const { BASE_URL, API } = window.ADMIN_CONFIG;
 
 const CONTACT_API = BASE_URL + API.CONTACT;
 const DASHBOARD_API = BASE_URL + API.DASHBOARD;
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html";
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -283,3 +289,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+})();
