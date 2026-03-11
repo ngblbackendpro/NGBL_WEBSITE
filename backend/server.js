@@ -16,6 +16,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const legalRoutes = require("./routes/legalPageRoutes");
 const port = process.env.PORT || 5000;;
 const connectDB = require("./config/db");
+const authRoutes = require('./routes/authRoutes')
 
 
 connectDB();
@@ -60,6 +61,7 @@ app.use('/api/home', homeRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/legal", legalRoutes);
+app.use("/api/auth", authRoutes)
 
 
 
