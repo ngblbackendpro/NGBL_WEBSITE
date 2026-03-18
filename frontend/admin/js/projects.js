@@ -51,7 +51,7 @@ function setupFormListeners() {
                 const data = await response.json();
 
                 if (response.ok) {
-                    showFlashMessage("✔ Upcoming project added successfully!");
+                    alert("✔ Upcoming project added successfully!");
                     upcomingForm.reset();
                     document.getElementById("upcomingPreview").style.display = "none";
                     document.getElementById("upcomingFileLabel").style.display = "block";
@@ -59,7 +59,7 @@ function setupFormListeners() {
 
                     loadProjects("upcoming");
                 } else {
-                    showFlashMessage(data.message || "Error adding project", "error");
+                    alert(data.message || "Error adding project", "error");
                 }
 
             } catch (error) {
@@ -92,7 +92,7 @@ function setupFormListeners() {
                 const data = await response.json();
 
                 if (response.ok) {
-                    showFlashMessage("✔ Completed project added successfully!");
+                    alert("✔ Completed project added successfully!");
                     completedForm.reset();
                     document.getElementById("completedPreview").style.display = "none";
                     document.getElementById("completedFileLabel").style.display = "block";
@@ -100,7 +100,7 @@ function setupFormListeners() {
 
                     loadProjects("completed");
                 } else {
-                    showFlashMessage(data.message || "Error adding project", "error");
+                    alert(data.message || "Error adding project", "error");
                 }
 
             } catch (error) {

@@ -69,7 +69,7 @@ function setupFormListener() {
         const link = document.getElementById('workLink').value;
 
         if (!title || !category || !description || !workSelectedImageData) {
-            showFlashMessage('Please fill all required fields and select an image', 'error');
+            alert('Please fill all required fields and select an image', 'error');
             return;
         }
 
@@ -90,7 +90,7 @@ function setupFormListener() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.message);
 
-            showFlashMessage('✔ Work added successfully!');
+            alert('✔ Work added successfully!');
             form.reset();
             workSelectedImageData = null;
             document.getElementById('workImagePreview').style.display = 'none';
@@ -98,7 +98,7 @@ function setupFormListener() {
             displayWorks();
         } catch (err) {
             console.error(err);
-            showFlashMessage('Failed to add work', 'error');
+            alert('Failed to add work', 'error');
         }
     });
 }

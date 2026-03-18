@@ -117,7 +117,7 @@ async function loadServices() {
       card.innerHTML = `
         ${
           service.image
-            ? `<img src="${BASE_URL}${service.image}" alt="${service.title}">`
+            ? `<img src="${service.image}" alt="${service.title}">`
             : `<div style="font-size:48px;text-align:center;">${service.icon || "🛠️"}</div>`
         }
         <div class="item-title">${service.title}</div>

@@ -11,21 +11,10 @@ exports.createProject = async (req, res) => {
     let imageUrl = null;
     let imagePublicId = null;
 
-    // ✅ Upload to Cloudinary
+    // ✅ Correct way
     if (req.file) {
-      const result = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "projects" },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(req.file.buffer);
-      });
-
-      imageUrl = result.secure_url;
-      imagePublicId = result.public_id;
+      imageUrl = req.file.path;
+      imagePublicId = req.file.filename;
     }
 
     const project = await Project.create({
@@ -45,6 +34,7 @@ exports.createProject = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("PROJECT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };

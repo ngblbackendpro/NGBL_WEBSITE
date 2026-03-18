@@ -47,7 +47,7 @@ const ServicesModule = {
                 card.innerHTML = `
                     <div class="service-icon-modern">
                         ${service.image
-                            ? `<img src="${BASE_URL}${service.image}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;">`
+                            ? `<img src="${service.image}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;">`
                             : `<span style="font-size:40px;">🛠️</span>`
                         }
                     </div>

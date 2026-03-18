@@ -53,14 +53,14 @@ function setupFormListener() {
                 const data = await response.json();
 
                 if (response.ok) {
-                    showFlashMessage('✔ Blog published successfully!');
+                    alert('✔ Blog published successfully!');
                     form.reset();
                     blogSelectedImageData = null;
                     document.getElementById('blogImagePreview').style.display = 'none';
                     document.getElementById('blogFileLabel').style.display = 'block';
                     displayBlogs();
                 } else {
-                    showFlashMessage(data.error || "Error publishing blog", 'error');
+                    alert(data.error || "Error publishing blog", 'error');
                 }
 
             } catch (error) {

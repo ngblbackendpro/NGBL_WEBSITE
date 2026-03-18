@@ -8,20 +8,9 @@ exports.createBlog = async (req, res) => {
 
     let imageUrl = null;
 
-    // ✅ Upload to Cloudinary if image exists
+    // ✅ Correct way
     if (req.file) {
-      const result = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "blogs" },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(req.file.buffer);
-      });
-
-      imageUrl = result.secure_url;
+      imageUrl = req.file.path;
     }
 
     const newBlog = new Blog({
@@ -32,7 +21,7 @@ exports.createBlog = async (req, res) => {
       description,
       content,
       tags: tags ? tags.split(",") : [],
-      image: imageUrl   // ✅ SAVE CLOUDINARY URL
+      image: imageUrl
     });
 
     await newBlog.save();
@@ -40,10 +29,10 @@ exports.createBlog = async (req, res) => {
     res.status(201).json({ message: "Blog created successfully" });
 
   } catch (error) {
+    console.error("BLOG ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 };
-
 // GET ALL BLOGS
 exports.getBlogs = async (req, res) => {
   try {

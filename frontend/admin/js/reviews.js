@@ -94,7 +94,7 @@ function setupFormListener() {
             const data = await response.json();
 
             if (data.success) {
-                showFlashMessage('✔ Review added successfully!');
+                alert('✔ Review added successfully!');
                 form.reset();
                 reviewSelectedImageData = null;
 
@@ -103,7 +103,7 @@ function setupFormListener() {
 
                 displayReviews();
             } else {
-                showFlashMessage(data.message || 'Error adding review', 'error');
+                alert(data.message || 'Error adding review', 'error');
             }
 
         } catch (error) {

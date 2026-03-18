@@ -12,23 +12,9 @@ exports.addWork = async (req, res) => {
       return res.status(400).json({ message: "Work image is required" });
     }
 
-    let imageUrl = null;
-    let imagePublicId = null;
-
-    // ✅ Upload to Cloudinary
-    const result = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "works" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      stream.end(req.file.buffer);
-    });
-
-    imageUrl = result.secure_url;
-    imagePublicId = result.public_id;
+    // ✅ USE THIS ONLY
+    const imageUrl = req.file.path;
+    const imagePublicId = req.file.filename;
 
     const work = new Work({
       title,
@@ -36,7 +22,7 @@ exports.addWork = async (req, res) => {
       description,
       link,
       image: imageUrl,
-      imagePublicId: imagePublicId, // ✅ important
+      imagePublicId: imagePublicId,
     });
 
     await work.save();
@@ -48,8 +34,8 @@ exports.addWork = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    console.error("WORK ERROR:", error); // 👈 important
+    res.status(500).json({ message: error.message }); // 👈 show real error
   }
 };
 

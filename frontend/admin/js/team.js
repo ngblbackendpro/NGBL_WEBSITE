@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function setupFormListener() {
     const form = document.getElementById("addTeamForm");
+    if (!form) return;
+
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -28,22 +30,36 @@ function setupFormListener() {
         formData.append("email", document.getElementById("memberEmail").value);
         formData.append("phone", document.getElementById("memberPhone").value);
         formData.append("linkedin", document.getElementById("memberLinkedin").value);
-        formData.append("image", document.getElementById("memberImage").files[0]);
+        const imageFile = document.getElementById("memberImage").files[0];
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
 
         try {
-            await fetch(API_URL, {
-                method: "POST",
-                body: formData
+            const res = await fetch(API_URL, {
+            method: "POST",
+            body: formData
             });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                console.error(data);
+                throw new Error(data.error || "Upload failed");
+            }
 
             alert("Team member added!");
             form.reset();
             teamSelectedImageData = null;
-            document.getElementById('teamImagePreview').style.display = 'none';
-            document.getElementById('teamFileLabel').style.display = 'block';
+            const preview = document.getElementById('teamImagePreview');
+            const label = document.getElementById('teamFileLabel');
+
+            if (preview) preview.style.display = 'none';
+            if (label) label.style.display = 'block';
             loadTeam();
 
         } catch (error) {
+            console.error("UPLOAD ERROR:", error);
             alert("Error adding member");
         }
     });
@@ -67,10 +83,11 @@ function setupTeamImagePreview() {
 
             reader.onload = function (event) {
                 teamSelectedImageData = event.target.result;
-                previewImg.src = teamSelectedImageData;
 
-                previewDiv.style.display = "block";
-                fileLabel.style.display = "none";
+                if (previewImg) previewImg.src = teamSelectedImageData;
+
+                if (previewDiv) previewDiv.style.display = "block";
+                if (fileLabel) fileLabel.style.display = "none";
             };
 
             reader.readAsDataURL(file);
@@ -84,13 +101,14 @@ function setupTeamImagePreview() {
 
     // Cancel button
     cancelBtn.addEventListener("click", () => {
-        fileInput.value = "";
-        teamSelectedImageData = null;
-        previewImg.src = "";
+            fileInput.value = "";
+            teamSelectedImageData = null;
 
-        previewDiv.style.display = "none";
-        fileLabel.style.display = "block";
-    });
+            if (previewImg) previewImg.src = "";
+
+            if (previewDiv) previewDiv.style.display = "none";
+            if (fileLabel) fileLabel.style.display = "block";
+        });
 }
 
 
@@ -98,6 +116,13 @@ async function loadTeam() {
     const container = document.getElementById("teamList");
 
     const response = await fetch(API_URL);
+
+    if (!response.ok) {
+        console.error("Failed to fetch team");
+        container.innerHTML = "<p>Error loading team</p>";
+        return;
+    }
+
     const members = await response.json();
 
     container.innerHTML = "";
@@ -112,7 +137,7 @@ async function loadTeam() {
         card.className = "item-card";
 
         card.innerHTML = `
-            <img src="${member.image}" />
+            <img src="${getMemberImage(member)}" />
             <div class="item-title">${member.name}</div>
             <div class="item-text">${member.position}</div>
             <div class="item-text">${member.description}</div>
@@ -121,6 +146,20 @@ async function loadTeam() {
 
         container.appendChild(card);
     });
+}
+
+function getMemberImage(member) {
+    if (!member.image) {
+        return "img/default-user.png";
+    }
+
+    // ✅ Cloudinary image
+    if (/^https?:\/\//i.test(member.image)) {
+        return member.image;
+    }
+
+    // ❌ old local images fallback (optional)
+    return BASE_URL + "/" + member.image;
 }
 
 async function deleteMember(id) {

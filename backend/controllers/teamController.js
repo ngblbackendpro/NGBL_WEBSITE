@@ -9,21 +9,10 @@ exports.createMember = async (req, res) => {
     let imageUrl = null;
     let imagePublicId = null;
 
-    // ✅ Upload to Cloudinary
+    // ✅ multer-storage-cloudinary already uploads
     if (req.file) {
-      const result = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "team" },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(req.file.buffer);
-      });
-
-      imageUrl = result.secure_url;
-      imagePublicId = result.public_id;
+      imageUrl = req.file.path;        // Cloudinary URL
+      imagePublicId = req.file.filename; // Public ID
     }
 
     const newMember = new Team({
@@ -34,7 +23,7 @@ exports.createMember = async (req, res) => {
       phone,
       linkedin,
       image: imageUrl,
-      imagePublicId: imagePublicId, // ✅ important
+      imagePublicId: imagePublicId,
     });
 
     await newMember.save();

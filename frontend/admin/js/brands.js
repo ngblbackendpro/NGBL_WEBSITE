@@ -70,7 +70,7 @@ function setupFormListener() {
         const imageFile = document.getElementById('brandImage').files[0];
 
         if (!name || !imageFile) {
-            showFlashMessage('Please fill all required fields and select an image', 'error');
+            alert('Please fill all required fields and select an image', 'error');
             return;
         }
 
@@ -88,17 +88,17 @@ function setupFormListener() {
             const data = await response.json();
 
             if (response.ok) {
-                showFlashMessage("✔ Brand added successfully!");
+                alert("✔ Brand added successfully!");
                 form.reset();
                 resetImagePreview();
                 displayBrands();
             } else {
-                showFlashMessage(data.message || "Error adding brand", "error");
+                alert(data.message || "Error adding brand", "error");
             }
 
         } catch (error) {
             console.error("Add Brand Error:", error);
-            showFlashMessage("Server error", "error");
+            alert("Server error", "error");
         }
     });
 }
