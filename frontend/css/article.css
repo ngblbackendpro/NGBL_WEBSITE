@@ -146,6 +146,46 @@
     overflow: hidden;
 }
 
+.blog-card-actions {
+    margin-top: 22px;
+}
+
+.blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-white);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, var(--color-purple-primary), var(--color-accent-blue));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    padding: 10px 18px;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    text-decoration: none;
+}
+
+.blog-read-more:hover {
+    color: var(--color-white);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    filter: brightness(1.05);
+    text-decoration: none;
+}
+
+.blog-empty-state {
+    margin: 0;
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid var(--color-border-light);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--color-light-grey);
+    text-align: center;
+}
+
 
 /* View More Button */
 
@@ -171,6 +211,116 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+.blog-detail-page {
+    padding-top: 140px;
+    padding-bottom: 100px;
+    background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 28%),
+        var(--color-black);
+    min-height: calc(100vh - 200px);
+}
+
+.blog-detail-shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.blog-detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    color: var(--color-purple-light);
+    font-weight: 700;
+}
+
+.blog-detail-card {
+    background: rgba(24, 24, 27, 0.92);
+    border: 1px solid var(--color-border-light);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.blog-detail-cover {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    object-fit: cover;
+    display: block;
+}
+
+.blog-detail-body {
+    padding: 48px;
+}
+
+.blog-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 20px;
+    color: var(--color-light-grey);
+}
+
+.blog-detail-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.blog-detail-title {
+    margin: 0 0 18px;
+    font-size: clamp(2rem, 3vw, 3.4rem);
+    line-height: 1.15;
+}
+
+.blog-detail-description {
+    margin: 0 0 28px;
+    font-size: 1.08rem;
+    color: var(--color-light-grey);
+    line-height: 1.8;
+}
+
+.blog-detail-content {
+    color: var(--color-white);
+    line-height: 1.85;
+    font-size: 1rem;
+}
+
+.blog-detail-content > *:first-child {
+    margin-top: 0;
+}
+
+.blog-detail-content h2,
+.blog-detail-content h3,
+.blog-detail-content h4 {
+    margin-top: 28px;
+    margin-bottom: 14px;
+    color: var(--color-white);
+}
+
+.blog-detail-content p,
+.blog-detail-content ul,
+.blog-detail-content ol,
+.blog-detail-content blockquote {
+    margin-bottom: 18px;
+}
+
+.blog-detail-content ul,
+.blog-detail-content ol {
+    padding-left: 22px;
+}
+
+.blog-detail-state {
+    padding: 80px 20px;
+}
+
+.blog-detail-state .blog-empty-state {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
 @media (max-width: 1200px) {
     .blog-grid-full {
         grid-template-columns: repeat(2, 1fr);
@@ -189,6 +339,16 @@
     }
     .articles-page .section-title {
         font-size: 2rem;
+    }
+    .blog-detail-page {
+        padding-top: 120px;
+        padding-bottom: 72px;
+    }
+    .blog-detail-body {
+        padding: 30px 22px;
+    }
+    .blog-detail-cover {
+        aspect-ratio: 4 / 3;
     }
 }
 
@@ -385,6 +545,12 @@
     }
     .blog-modal-image {
         height: 280px;
+    }
+    .blog-detail-shell {
+        padding: 0 12px;
+    }
+    .blog-detail-title {
+        font-size: 1.8rem;
     }
     .blog-modal-details {
         padding: 28px 24px;

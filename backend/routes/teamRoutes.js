@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const upload = require("../middleware/upload");
+
+const upload = require("../middleware/upload"); // ✅ centralized multer
 
 const {
   createMember,
@@ -9,9 +9,15 @@ const {
   deleteMember
 } = require("../controllers/teamController");
 
-router.post("/", upload.single("image"), createMember);
-router.get("/", getMembers);
-router.delete("/:id", deleteMember);
+// ================= ROUTES =================
 
+// CREATE MEMBER
+router.post("/", upload.single("image"), createMember);
+
+// GET MEMBERS
+router.get("/", getMembers);
+
+// DELETE MEMBER
+router.delete("/:id", deleteMember);
 
 module.exports = router;

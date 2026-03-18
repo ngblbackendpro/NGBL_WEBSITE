@@ -1,0 +1,108 @@
+:root {
+    --legal-surface: rgba(24, 24, 27, 0.92);
+    --legal-border: rgba(255, 255, 255, 0.08);
+}
+
+.legal-page-main {
+    min-height: calc(100vh - 200px);
+    padding: 136px 0 100px;
+    background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 24%),
+        var(--color-black);
+}
+
+.legal-shell {
+    width: min(1100px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.legal-hero {
+    margin-bottom: 34px;
+}
+
+.legal-kicker {
+    margin: 0 0 14px;
+    color: var(--color-purple-light);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.legal-title {
+    margin: 0 0 16px;
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    line-height: 1.08;
+    color: var(--color-white);
+}
+
+.legal-intro {
+    margin: 0;
+    max-width: 760px;
+    color: var(--color-light-grey);
+    font-size: 1.03rem;
+    line-height: 1.85;
+}
+
+.legal-card {
+    border-radius: 28px;
+    border: 1px solid var(--legal-border);
+    background: var(--legal-surface);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+.legal-content {
+    padding: 42px;
+    color: var(--color-white);
+    line-height: 1.85;
+}
+
+.legal-content > *:first-child {
+    margin-top: 0;
+}
+
+.legal-content h2,
+.legal-content h3,
+.legal-content h4 {
+    margin-top: 30px;
+    margin-bottom: 14px;
+    color: var(--color-white);
+}
+
+.legal-content p,
+.legal-content ul,
+.legal-content ol,
+.legal-content blockquote {
+    margin-bottom: 18px;
+}
+
+.legal-content ul,
+.legal-content ol {
+    padding-left: 22px;
+}
+
+@media (max-width: 768px) {
+    .legal-page-main {
+        padding: 118px 0 72px;
+    }
+
+    .legal-content {
+        padding: 28px 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .legal-shell {
+        width: min(1100px, calc(100% - 24px));
+    }
+
+    .legal-title {
+        font-size: 1.9rem;
+    }
+
+    .legal-intro {
+        font-size: 0.98rem;
+    }
+}

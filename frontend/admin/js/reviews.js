@@ -132,7 +132,7 @@ async function displayReviews() {
 
             card.innerHTML = `
                 ${review.image 
-                    ? `<img src="${BASE_URL}/${review.image}" 
+                    ? `<img src="${review.image}" 
                         alt="${review.name}" 
                         style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;">` 
                     : ''

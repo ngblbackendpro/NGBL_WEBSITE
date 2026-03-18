@@ -9,6 +9,7 @@ const serviceSchema = new mongoose.Schema({
   type: [String], default: []},
   category: { type: String, default: "all" },
   image: { type: String },
+  imagePublicId: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 

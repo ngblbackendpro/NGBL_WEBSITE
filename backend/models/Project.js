@@ -33,6 +33,9 @@ const projectSchema = new mongoose.Schema(
       enum: ["upcoming", "completed"],
       required: true,
     },
+    imagePublicId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

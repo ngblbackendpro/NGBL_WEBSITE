@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Blog Details - NGBL</title>
+    <meta name="description" content="Read the full NGBL blog article with insights on branding, strategy, and growth.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/ngblfav.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/ngblfav.png">
+    <link rel="shortcut icon" type="image/png" href="img/ngblfav.png">
+    <meta property="og:title" content="Blog Details - NGBL">
+    <meta property="og:description" content="Read the full NGBL blog article with insights on branding, strategy, and growth.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ngbl.com/blog-details.html">
+    <meta property="og:image" content="https://ngbl.com/img/opengraph.png">
+    <meta property="og:image:alt" content="NGBL Blog Details">
+    <link rel="stylesheet" href="css/style.css?v=3" media="screen">
+    <link rel="stylesheet" href="css/article.css?v=2" media="screen">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="header-container"></div>
+
+    <main id="main-content" class="blog-detail-page" role="main">
+        <div class="blog-detail-shell">
+            <a href="blogs.html" class="blog-detail-back">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                Back to Blogs
+            </a>
+
+            <article class="blog-detail-card" id="blogDetailCard" hidden>
+                <img id="blogDetailImage" class="blog-detail-cover" src="" alt="">
+                <div class="blog-detail-body">
+                    <div class="blog-detail-meta">
+                        <span id="blogDetailDate"><i class="far fa-calendar" aria-hidden="true"></i></span>
+                        <span id="blogDetailCategory"><i class="fas fa-tag" aria-hidden="true"></i></span>
+                        <span id="blogDetailAuthor"><i class="far fa-user" aria-hidden="true"></i></span>
+                    </div>
+                    <h1 class="blog-detail-title" id="blogDetailTitle"></h1>
+                    <p class="blog-detail-description" id="blogDetailDescription"></p>
+                    <div class="blog-detail-content" id="blogDetailContent"></div>
+                </div>
+            </article>
+
+            <section class="blog-detail-state" id="blogDetailState">
+                <p class="blog-empty-state">Loading blog article...</p>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/layout.js?v=11"></script>
+    <script src="js/config.js?v=2"></script>
+    <script src="js/utils.js?v=2" defer></script>
+    <script src="js/Script.js?v=3" defer></script>
+    <script src="js/article.js?v=3" defer></script>
+</body>
+</html>

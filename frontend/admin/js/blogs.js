@@ -135,7 +135,7 @@ async function displayBlogs() {
 
             card.innerHTML = `
                 ${blog.image 
-                    ? `<img src="${BASE_URL}/uploads/${blog.image}" alt="${blog.title}">`
+                    ? `<img src="${blog.image}" alt="${blog.title}">`
                     : `<div style="height:200px;background:#eee;display:flex;align-items:center;justify-content:center;">No Image</div>`
                 }
 
@@ -247,7 +247,7 @@ async function viewBlog(id) {
             </div>
 
             ${blog.image 
-                ? `<img src="${BASE_URL}/uploads/${blog.image}" 
+                ? `<img src="${blog.image}" 
                     alt="${blog.title}" 
                     style="width:100%;height:250px;object-fit:cover;border-radius:5px;margin-bottom:15px;">`
                 : ''

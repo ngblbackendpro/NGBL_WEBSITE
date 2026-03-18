@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+    resetPageTransitionState();
     document.body.classList.add("motion-enhanced");
 
     loadComponent("header-container", "components/header.html");
     loadComponent("footer-container", "components/footer.html");
+    ensureWhatsAppButton();
 
-    initPreloader();
     initScrollAnimations();
     initNavbarScrollState();
     initAnchorSmoothScroll();
@@ -21,20 +22,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setTimeout(setActiveLink, 150);
     setTimeout(refreshMotionEnhancements, 260);
+    scheduleInitialHashScroll();
 });
 
 window.addEventListener("load", function () {
     sanitizeHomeHashOnLoad();
-    document.body.classList.remove("page-enter");
-    document.body.classList.add("page-ready");
-    hidePreloader();
+    resetPageTransitionState();
+    removeLegacyPreloader();
+    ensureWhatsAppButton();
+    scheduleInitialHashScroll();
     refreshMotionEnhancements();
 });
 
 window.addEventListener("pageshow", function () {
     sanitizeHomeHashOnLoad();
+    resetPageTransitionState();
+    removeLegacyPreloader();
+    ensureWhatsAppButton();
+    scheduleInitialHashScroll();
     refreshMotionEnhancements();
 });
+
+window.addEventListener("hashchange", function () {
+    if (!isHomePage()) {
+        return;
+    }
+
+    ensureHashTargetVisible("smooth");
+});
+
+function resetPageTransitionState() {
+    document.body.classList.remove("page-enter", "page-leaving");
+    document.body.classList.add("page-ready");
+}
 
 function loadComponent(id, file) {
     const target = document.getElementById(id);
@@ -42,11 +62,20 @@ function loadComponent(id, file) {
         return;
     }
 
-    const cacheKey = `component-cache:${file}`;
+    const COMPONENT_CACHE_VERSION = "v3";
+    const cacheKey = `component-cache:${COMPONENT_CACHE_VERSION}:${file}`;
     const cachedMarkup = window.sessionStorage ? sessionStorage.getItem(cacheKey) : null;
+
+    if (window.sessionStorage && !window.__legacyComponentCacheCleared) {
+        sessionStorage.removeItem(`component-cache:components/header.html`);
+        sessionStorage.removeItem(`component-cache:components/footer.html`);
+        window.__legacyComponentCacheCleared = true;
+    }
 
     const applyComponent = (markup) => {
         target.innerHTML = markup;
+
+        normalizeContactLinks(target);
 
         if (id === "footer-container" && typeof loadHomeDataFromAPI === "function") {
             loadHomeDataFromAPI();
@@ -72,6 +101,20 @@ function loadComponent(id, file) {
             }
         })
         .catch(error => console.error(error));
+}
+
+function normalizeContactLinks(scope) {
+    if (!scope || !scope.querySelectorAll) {
+        return;
+    }
+
+    scope.querySelectorAll('a[href="index.html#reviews"], a[href="#reviews"]').forEach((link) => {
+        const title = (link.getAttribute("title") || "").toLowerCase();
+        const text = (link.textContent || "").toLowerCase();
+        if (title.includes("contact") || text.includes("contact")) {
+            link.setAttribute("href", "index.html?scroll=contact");
+        }
+    });
 }
 
 function refreshMotionEnhancements() {
@@ -116,6 +159,19 @@ function isHomePage() {
     return path.endsWith("/") || path.endsWith("/index.html") || path === "";
 }
 
+function isHomePath(pathname) {
+    const path = (pathname || "").toLowerCase();
+    return path.endsWith("/") || path.endsWith("/index.html") || path === "";
+}
+
+let activeScrollAnimationFrame = 0;
+let activeScrollAnimationToken = 0;
+let lastHandledHash = "";
+let lastHandledHashAt = 0;
+let pendingHashScrollTimer = 0;
+let pendingHashScrollToken = 0;
+let waitingForHomeDataScroll = false;
+
 function sanitizeHomeHashOnLoad() {
     if (!isHomePage()) {
         return;
@@ -127,6 +183,192 @@ function sanitizeHomeHashOnLoad() {
     }
 
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+function scheduleInitialHashScroll() {
+    if (!isHomePage()) {
+        return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedTarget = params.get("scroll");
+    const initialBehavior = requestedTarget ? "auto" : "smooth";
+    if (requestedTarget && !window.location.hash) {
+        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${requestedTarget}`);
+    }
+
+    if (requestedTarget && !window.__homeDataReady) {
+        if (!waitingForHomeDataScroll) {
+            waitingForHomeDataScroll = true;
+
+            const resumeAfterData = () => {
+                waitingForHomeDataScroll = false;
+                if (pendingHashScrollTimer) {
+                    window.clearTimeout(pendingHashScrollTimer);
+                    pendingHashScrollTimer = 0;
+                }
+                scheduleInitialHashScroll();
+            };
+
+            window.addEventListener("home-data-ready", resumeAfterData, { once: true });
+            pendingHashScrollTimer = window.setTimeout(resumeAfterData, 1800);
+        }
+        return;
+    }
+
+    if (!window.location.hash) {
+        return;
+    }
+
+    const currentHash = window.location.hash;
+    const now = Date.now();
+    const isRecentDuplicate = currentHash === lastHandledHash && (now - lastHandledHashAt) < 4000;
+    if (isRecentDuplicate) {
+        return;
+    }
+
+    let attempts = 0;
+    const maxAttempts = 8;
+
+    const tryScroll = () => {
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const target = id ? document.getElementById(id) : null;
+
+        if (target) {
+            queueStableHashScroll(target, currentHash, initialBehavior);
+            return;
+        }
+
+        attempts += 1;
+        if (attempts < maxAttempts) {
+            window.setTimeout(tryScroll, 120);
+        }
+    };
+
+    window.requestAnimationFrame(tryScroll);
+}
+
+function queueStableHashScroll(target, hashValue, behavior) {
+    if (!target) {
+        return;
+    }
+
+    if (pendingHashScrollTimer) {
+        window.clearTimeout(pendingHashScrollTimer);
+        pendingHashScrollTimer = 0;
+    }
+
+    pendingHashScrollToken += 1;
+    lastHandledHash = hashValue;
+    lastHandledHashAt = Date.now();
+    ensureHashTargetVisible(behavior || "smooth");
+}
+
+function ensureHashTargetVisible(behavior) {
+    if (!isHomePage() || !window.location.hash) {
+        return;
+    }
+
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) {
+        return;
+    }
+
+    const target = document.getElementById(id);
+    if (!target) {
+        return;
+    }
+
+    scrollToElementWithOffset(target, behavior || "auto");
+}
+
+function ensureWhatsAppButton() {
+    if (!isPublicPage()) {
+        return;
+    }
+
+    const existingButton = document.querySelector(".whatsapp-button");
+    const button = existingButton || document.createElement("a");
+    const defaultMessage = "Hello, I visited your website and need more information.";
+    const waUrl = `https://wa.me/919810119009?text=${encodeURIComponent(defaultMessage)}`;
+
+    button.href = waUrl;
+    button.className = "whatsapp-button";
+    button.target = "_blank";
+    button.rel = "noopener noreferrer";
+    button.setAttribute("aria-label", "Chat with us on WhatsApp");
+    button.title = "Chat on WhatsApp";
+    button.innerHTML = `
+        <span class="whatsapp-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M19.11 17.42c-.27-.14-1.57-.77-1.81-.85-.24-.09-.42-.14-.6.14-.18.27-.68.85-.83 1.03-.15.18-.3.2-.56.07-.27-.14-1.11-.41-2.11-1.31-.78-.69-1.3-1.54-1.46-1.8-.15-.27-.02-.42.11-.55.12-.12.27-.3.41-.45.14-.15.18-.25.27-.41.09-.18.05-.33-.02-.46-.07-.14-.6-1.45-.83-1.98-.22-.53-.44-.45-.6-.45l-.51-.01c-.18 0-.46.07-.7.33-.24.27-.91.89-.91 2.16s.93 2.5 1.07 2.68c.14.18 1.82 2.78 4.41 3.89.61.27 1.09.43 1.46.55.61.2 1.16.17 1.6.11.49-.07 1.57-.64 1.79-1.25.22-.6.22-1.12.15-1.24-.06-.11-.24-.18-.51-.32z"/>
+                <path fill="currentColor" d="M16.02 4.02c-6.62 0-12 5.38-12 12 0 2.12.55 4.2 1.6 6.03L4 28l6.12-1.6c1.75.95 3.7 1.45 5.9 1.45h.01c6.62 0 12-5.38 12-12s-5.39-11.83-12.01-11.83zm0 21.67h-.01c-1.82 0-3.6-.49-5.15-1.43l-.36-.21-3.63.95.97-3.54-.24-.37a9.78 9.78 0 01-1.5-5.21c0-5.39 4.39-9.78 9.79-9.78 2.62 0 5.08 1.02 6.92 2.86a9.71 9.71 0 012.86 6.92c0 5.4-4.39 9.81-9.65 9.81z"/>
+            </svg>
+        </span>
+    `;
+
+    if (!existingButton) {
+        document.body.appendChild(button);
+    }
+}
+
+function scrollToElementWithOffset(target, behavior) {
+    if (!target) {
+        return;
+    }
+
+    const header = document.querySelector(".header");
+    const headerOffset = header ? header.getBoundingClientRect().height + 12 : 92;
+    const destination = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
+
+    if (behavior === "smooth" && !isMotionReduced()) {
+        animateScrollTo(destination, 620);
+        return;
+    }
+
+    cancelActiveScrollAnimation();
+
+    window.scrollTo({ top: destination, left: 0, behavior: "auto" });
+}
+
+function cancelActiveScrollAnimation() {
+    activeScrollAnimationToken += 1;
+    if (activeScrollAnimationFrame) {
+        window.cancelAnimationFrame(activeScrollAnimationFrame);
+        activeScrollAnimationFrame = 0;
+    }
+}
+
+function animateScrollTo(destination, durationMs) {
+    cancelActiveScrollAnimation();
+
+    const start = window.scrollY || window.pageYOffset;
+    const distance = destination - start;
+    const dynamicDuration = Math.min(520, Math.max(240, Math.abs(distance) * 0.32));
+    const duration = Math.max(220, durationMs || dynamicDuration);
+    const startTime = performance.now();
+    const token = activeScrollAnimationToken;
+
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    const step = (now) => {
+        if (token !== activeScrollAnimationToken) {
+            return;
+        }
+
+        const elapsed = now - startTime;
+        const progress = Math.min(1, elapsed / duration);
+        const eased = easeOutCubic(progress);
+        window.scrollTo(0, start + distance * eased);
+
+        if (progress < 1) {
+            activeScrollAnimationFrame = window.requestAnimationFrame(step);
+        } else {
+            activeScrollAnimationFrame = 0;
+        }
+    };
+
+    activeScrollAnimationFrame = window.requestAnimationFrame(step);
 }
 
 function initAnchorSmoothScroll() {
@@ -153,55 +395,21 @@ function initAnchorSmoothScroll() {
             }
 
             event.preventDefault();
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            scrollToElementWithOffset(target, "smooth");
         });
     });
 }
 
-function initPreloader() {
-    if (!isHomePage() || window.location.hash) {
-        return;
-    }
-
-    if (document.getElementById("page-preloader")) {
-        return;
-    }
-
-    const preloader = document.createElement("div");
-    preloader.id = "page-preloader";
-    preloader.innerHTML = `
-        <div class="preloader-orbit" aria-hidden="true"></div>
-        <div class="preloader-streaks" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div class="preloader-inner">
-            <img class="preloader-logo" src="img/NGBL_Logo-removebg-preview.png" alt="NGBL" />
-            <div class="preloader-spinner" aria-hidden="true"></div>
-        </div>
-    `;
-
-    document.body.classList.add("preloader-active");
-    document.body.appendChild(preloader);
-}
-
-function hidePreloader() {
+function removeLegacyPreloader() {
     const preloader = document.getElementById("page-preloader");
-    if (!preloader || document.body.classList.contains("preloader-hidden")) {
+    if (!preloader) {
         return;
     }
 
-    setTimeout(() => {
-        document.body.classList.add("preloader-hidden");
-        document.body.classList.remove("preloader-active");
-
-        setTimeout(() => {
-            if (preloader && preloader.parentNode) {
-                preloader.parentNode.removeChild(preloader);
-            }
-        }, 300);
-    }, 450);
+    document.body.classList.remove("preloader-active", "preloader-hidden");
+    if (preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
+    }
 }
 
 function initScrollAnimations() {
@@ -291,6 +499,32 @@ function initPageTransitions() {
             return;
         }
 
+        if (
+            !isHomePage() &&
+            isHomePath(destination.pathname) &&
+            destination.hash === "#contact"
+        ) {
+            destination.hash = "";
+            destination.searchParams.set("scroll", "contact");
+        }
+
+        const isContactRouteToHome =
+            isHomePath(destination.pathname) &&
+            destination.searchParams.get("scroll") === "contact";
+
+        if (isContactRouteToHome) {
+            return;
+        }
+
+        const isHashOnlyNavigation =
+            destination.pathname === window.location.pathname &&
+            destination.search === window.location.search &&
+            destination.hash !== window.location.hash;
+
+        if (isHashOnlyNavigation) {
+            return;
+        }
+
         if (destination.href === window.location.href) {
             return;
         }
@@ -367,9 +601,7 @@ function initTextMaskReveal() {
         return;
     }
 
-    const targets = document.querySelectorAll(
-        ".about-hero-title, .about-hero-subtitle, .about-hero-description, .section-title, .section-subtitle"
-    );
+    const targets = document.querySelectorAll(".section-title, .section-subtitle");
 
     if (!targets.length) {
         return;

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const upload = require('../middleware/upload');
 
 const {
@@ -9,10 +10,10 @@ const {
   deleteBlog
 } = require("../controllers/blogController");
 
+// ✅ ROUTES
 router.post('/', upload.single('image'), createBlog);
 router.get("/", getBlogs);
-router.delete("/:id", deleteBlog);
 router.get("/:id", getSingleBlog);
-
+router.delete("/:id", deleteBlog);
 
 module.exports = router;

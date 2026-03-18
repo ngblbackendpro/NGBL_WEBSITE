@@ -1,4 +1,5 @@
 const Brand = require("../models/Brand");
+const cloudinary = require("../config/cloudinary");
 
 /* ===============================
    CREATE BRAND
@@ -11,10 +12,22 @@ exports.createBrand = async (req, res) => {
       return res.status(400).json({ message: "Brand image is required" });
     }
 
+    // ✅ upload to cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "brands" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
     const brand = new Brand({
       name,
       description,
-      image: req.file.path
+      image: result.secure_url   // ✅ SAVE URL
     });
 
     await brand.save();

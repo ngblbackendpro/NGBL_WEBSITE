@@ -487,7 +487,7 @@ async function loadBrandsFromAPI() {
 
             slide.innerHTML = `
                 <div class="brand-card brand-layer">
-                    <img src="${BASE_URL}/${brand.image.replace(/\\/g, '/')}" 
+                    <img src="${brand.image.replace(/\\/g, '/')}" 
                          alt="${brand.name}" 
                          loading="lazy" 
                          width="200" 
@@ -538,7 +538,7 @@ async function loadReviewsFromAPI() {
                 <article class="review-card">
                     <div class="review-top">
                         ${review.image 
-                            ? `<img src="${BASE_URL}/${review.image.replace(/\\/g, '/')}" 
+                            ? `<img src="${review.image.replace(/\\/g, '/')}" 
                                    alt="${review.name}" 
                                    style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-right:15px;">`
                             : `<div class="avatar">${review.name.charAt(0)}</div>`
@@ -588,26 +588,6 @@ async function loadHomeDataFromAPI() {
         }
         
 
-                // Total Projects
-                // Total Projects
-        // if (data.totalProjects !== undefined) {
-        //     const projectCounter = document.querySelector('.stat-card-cyan .counter');
-
-        //     if (projectCounter) {
-
-        //         const realCount = data.totalProjects;
-        //         const displayCount = realCount > 100 ? "100+" : realCount;
-
-        //         projectCounter.textContent = displayCount;
-
-        //         // IMPORTANT: Only animate if <= 100
-        //         if (realCount <= 100) {
-        //             projectCounter.setAttribute("data-target", realCount);
-        //         } else {
-        //             projectCounter.removeAttribute("data-target");
-        //         }
-        //     }
-        // }
 
 
         if (data.totalProjects !== undefined) {
@@ -740,7 +720,7 @@ async function loadProjectsFromAPI() {
             const item = document.createElement('figure');
             item.className = 'work-item';
             item.innerHTML = `
-                <img src="${BASE_URL}/${project.image.replace(/\\/g, '/')}" 
+                <img src="${project.image.replace(/\\/g, '/')}" 
                      alt="${project.title}" 
                      loading="lazy" 
                      width="400" 
@@ -760,27 +740,31 @@ async function loadProjectsFromAPI() {
 
 async function loadFooterPages() {
     const links = [
-        { id: "footerPrivacyPolicy", api: API.PRIVACY },
-        { id: "footerFAQ", api: API.FAQ },
-        { id: "footerTerms", api: API.TERMS }
+        { id: "footerPrivacyPolicy", api: API.PRIVACY, fallbackHref: "privacy-policy.html" },
+        { id: "footerFAQ", api: API.FAQ, fallbackHref: "faq.html" },
+        { id: "footerTerms", api: API.TERMS, fallbackHref: "terms-and-conditions.html" }
     ];
+
+    const slugToPage = {
+        privacy: "privacy-policy.html",
+        faq: "faq.html",
+        terms: "terms-and-conditions.html"
+    };
 
     for (const item of links) {
         try {
             const el = document.getElementById(item.id);
             if (!el) continue;
 
+            el.href = item.fallbackHref;
+
             const response = await fetch(BASE_URL + item.api);
             if (!response.ok) throw new Error("Failed to fetch page");
 
             const data = await response.json();
 
-            // Set the href dynamically
-            if (data.slug) {
-                el.href = `${window.location.origin}/page.html?type=${data.slug}`; // or `/pages/${data.slug}`
-            } else if (data.content) {
-                // optional: directly link to content page
-                el.href = data.content;
+            if (data.slug && slugToPage[data.slug]) {
+                el.href = slugToPage[data.slug];
             }
         } catch (error) {
             console.error(`Error loading ${item.id}:`, error);
@@ -810,10 +794,18 @@ if (document.readyState === 'loading') {
         initHomeSlider();
         // initSliders();
         initContactFormValidation();
-        loadReviewsFromAPI();
-        loadBrandsFromAPI();
-        loadHomeDataFromAPI();
-        loadWorksFromAPI();
+        const homeDataTasks = [
+            loadReviewsFromAPI(),
+            loadBrandsFromAPI(),
+            loadHomeDataFromAPI(),
+            loadWorksFromAPI()
+        ];
+
+        Promise.allSettled(homeDataTasks).finally(() => {
+            window.__homeDataReady = true;
+            window.dispatchEvent(new Event('home-data-ready'));
+        });
+
         loadFooterPages();
 
 
@@ -826,10 +818,18 @@ if (document.readyState === 'loading') {
     initHomeSlider();
     initSliders();
     initContactFormValidation();
-    loadReviewsFromAPI();
-    loadBrandsFromAPI();
-    loadHomeDataFromAPI();
-    loadWorksFromAPI();
+    const homeDataTasks = [
+        loadReviewsFromAPI(),
+        loadBrandsFromAPI(),
+        loadHomeDataFromAPI(),
+        loadWorksFromAPI()
+    ];
+
+    Promise.allSettled(homeDataTasks).finally(() => {
+        window.__homeDataReady = true;
+        window.dispatchEvent(new Event('home-data-ready'));
+    });
+
     loadFooterPages();
 
 
@@ -865,7 +865,7 @@ async function loadWorksFromAPI() {
             item.className = 'work-item';
 
             item.innerHTML = `
-                <img src="${BASE_URL}/${work.image.replace(/\\/g, '/')}" 
+                <img src="${work.image.replace(/\\/g, '/')}" 
                      alt="${work.title}" 
                      loading="lazy"
                      width="400"

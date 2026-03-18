@@ -1,15 +1,4 @@
-/**
- * NGBL Website - About Us Module
- * Features: Dynamic team loading, animations, hover effects
- */
 
-// const BASE_URL = window.location.hostname === "localhost"
-//     ? "http://localhost:5000"
-//     : "https://yourdomain.com";   // 🔥 CHANGE when live
-
-// const BASE_URL = "http://localhost:5000";
-
-// const API_URL = `${BASE_URL}/api/team`;
 const BASE_URL = window.APP_CONFIG.BASE_URL;
 const API_URL = BASE_URL + window.APP_CONFIG.API.TEAM;
 
@@ -38,7 +27,7 @@ const AboutUsModule = {
 
                 card.innerHTML = `
                     <div class="team-photo">
-                        <img src="${BASE_URL}/uploads/${member.image}" 
+                        <img src="${member.image}" 
                              alt="${member.name}" 
                              loading="lazy">
                     </div>
@@ -51,9 +40,11 @@ const AboutUsModule = {
 
                 container.appendChild(card);
             });
-
+            window.dispatchEvent(new Event("resize"));
             // Reinitialize hover after dynamic load
             this.initTeamHoverEffects();
+            this.initScrollAnimations();
+            
 
         } catch (error) {
             console.error("Error loading team:", error);
@@ -85,6 +76,7 @@ const AboutUsModule = {
         animatedElements.forEach(el => {
             if (!el.hasAttribute("data-animate")) {
                 el.setAttribute("data-animate", "");
+                el.classList.add("is-visible");
             }
         });
     },

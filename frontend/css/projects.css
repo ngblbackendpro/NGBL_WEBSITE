@@ -515,7 +515,14 @@ body.light-mode .projects-empty-state {
     color: var(--color-purple-primary);
 }
 
+.btn-primary i {
+    color: inherit;
+}
+
 .btn-primary:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    border-color: transparent;
+    color: var(--color-white);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }

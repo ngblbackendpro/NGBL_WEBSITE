@@ -6,7 +6,10 @@ const workSchema = new mongoose.Schema(
     category: { type: String, required: true },
     description: { type: String, required: true },
     link: { type: String },
-    image: { type: String, required: true } // store uploaded path
+    imagePublicId: {
+      type: String,
+    },
+    image: { type: String, required: true }
   },
   { timestamps: true }
 );

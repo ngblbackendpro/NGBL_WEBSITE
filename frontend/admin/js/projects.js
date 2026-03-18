@@ -222,7 +222,7 @@ async function loadProjects(status) {
             card.className = "item-card";
 
             card.innerHTML = `
-                <img src="${BASE_URL}/${project.image}" alt="${project.title}">
+                <img src="${getProjectImage(project)}" alt="${project.title}">
 
                 <div style="background:${status === "upcoming" ? "#e74c3c" : "#27ae60"};
                             color:white;
@@ -265,6 +265,22 @@ async function loadProjects(status) {
     } catch (error) {
         container.innerHTML = `<p>Error loading projects</p>`;
     }
+}
+
+
+
+function getProjectImage(project) {
+    if (!project.image) {
+        return "img/placeholder.png"; // fallback image
+    }
+
+    // ✅ If Cloudinary or external URL
+    if (/^https?:\/\//i.test(project.image)) {
+        return project.image;
+    }
+
+    // ✅ If old local image
+    return `${BASE_URL}/${project.image}`;
 }
 
 // ===============================

@@ -26,9 +26,41 @@
     <!-- Articles Page -->
     <url>
         <loc>https://ngbl.com/articles.html</loc>
-        <lastmod>2026-02-08</lastmod>
+        <lastmod>2026-03-16</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
+    </url>
+
+    <!-- Blogs Page -->
+    <url>
+        <loc>https://ngbl.com/blogs.html</loc>
+        <lastmod>2026-03-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- FAQ Page -->
+    <url>
+        <loc>https://ngbl.com/faq.html</loc>
+        <lastmod>2026-03-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Privacy Policy Page -->
+    <url>
+        <loc>https://ngbl.com/privacy-policy.html</loc>
+        <lastmod>2026-03-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Terms and Conditions Page -->
+    <url>
+        <loc>https://ngbl.com/terms-and-conditions.html</loc>
+        <lastmod>2026-03-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
     </url>
 
     <!-- NGBL Subdomains Page -->

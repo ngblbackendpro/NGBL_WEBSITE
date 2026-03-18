@@ -1,7 +1,3 @@
-// const BASE_URL =
-//     window.location.hostname === "localhost"
-//         ? "http://localhost:5000"
-//         : "https://yourdomain.com";
 
 
 const BASE_URL = window.APP_CONFIG.BASE_URL;
@@ -88,7 +84,7 @@ const ServicesModule = {
                         : ""
                     }
 
-                    <a href="index.html#contact" class="service-btn">
+                    <a href="index.html?scroll=contact" class="service-btn">
                         Learn More
                         <i class="fas fa-arrow-right"></i>
                     </a>

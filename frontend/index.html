@@ -53,9 +53,9 @@
     <meta property="og:url" content="https://ngbl.in/">
 
     <!-- OG Image - Optimized for Social Media (1200x630px recommended) -->
-    <meta property="og:image" content="https://ngbl.com/img/og-image.jpg">
-    <meta property="og:image:secure_url" content="https://ngbl.com/img/og-image.jpg">
-    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image" content="https://ngbl.com/img/opengraph.png">
+    <meta property="og:image:secure_url" content="https://ngbl.com/img/opengraph.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="NG BrandLab - Professional Brand Strategy & Market Consulting Services">
@@ -71,7 +71,7 @@
     <meta name="twitter:creator" content="@ngbl">
     <meta name="twitter:title" content="NGBL - Brand Strategy & Market Consulting">
     <meta name="twitter:description" content="Expert brand strategy, market consulting, and digital marketing solutions. 500+ successful projects across India.">
-    <meta name="twitter:image" content="https://ngbl.com/img/og-image.jpg">
+    <meta name="twitter:image" content="https://ngbl.com/img/opengraph.png">
     <meta name="twitter:image:alt" content="NG BrandLab - Professional Services Logo">
     <meta name="twitter:domain" content="ngbl.com">
 
@@ -85,7 +85,7 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css?v=2" media="screen">
+    <link rel="stylesheet" href="css/style.css?v=3" media="screen">
     <link rel="stylesheet" href="css/index.css?v=2" media="screen">
     <link rel="stylesheet" href="css/service.css?v=2" media="screen">
     <link rel="stylesheet" href="css/article.css?v=2" media="screen">
@@ -484,46 +484,25 @@
         <section class="blog-section" id="blog" role="region" aria-label="Articles and Blogs">
             <div class="blog-container">
                 <div class="section-header">
-                    <h2 class="section-title">Articles & Blogs</h2>
+                    <h2 class="section-title">Blogs & Articles</h2>
                     <div class="title-underline gradient" aria-hidden="true"></div>
                     <p class="section-subtitle">Stay updated with the latest trends, tips, and insights from our experts</p>
                 </div>
 
-                <div class="blog-grid" id="articlesContainer">
+                <div class="blog-grid" id="articlesContainer" data-limit="3" aria-live="polite">
                 <!-- Blogs will load dynamically -->
                 </div>
 
 
                 <!-- View More Button -->
                 <div class="blog-view-more">
-                    <a href="articles.html" class="view-more-btn" title="View All Articles & Blogs">
-                        <span>View All Articles</span>
+                    <a href="blogs.html" class="view-more-btn" title="View all blogs">
+                        <span>View All Blogs</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
         </section>
-
-        <!-- Blog Modal -->
-        <div class="blog-modal" id="blogModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <div class="blog-modal-overlay"></div>
-            <div class="blog-modal-content">
-                <button class="blog-modal-close" aria-label="Close modal">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="blog-modal-body">
-                    <img src="" alt="" class="blog-modal-image" id="modalImage">
-                    <div class="blog-modal-details">
-                        <div class="blog-modal-meta">
-                            <span class="blog-modal-date" id="modalDate"></span>
-                            <span class="blog-modal-category" id="modalCategory"></span>
-                        </div>
-                        <h2 class="blog-modal-title" id="modalTitle"></h2>
-                        <div class="blog-modal-text" id="modalContent"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- footer starts -->
        <div id="footer-container"></div>
@@ -531,11 +510,11 @@
 
     </main>
     <!-- Main JavaScript Files (Optimized Load Order) -->
-     <script src="js/layout.js?v=2"></script>
+     <script src="js/layout.js?v=11"></script>
     <script src="js/config.js?v=2"></script>
     <script src="js/utils.js?v=2" defer></script>
-    <script src="js/article.js?v=2"></script>
-    <script src="js/Script.js?v=2" defer></script>
+    <script src="js/article.js?v=3"></script>
+    <script src="js/Script.js?v=3" defer></script>
 
 </body>
 

@@ -120,7 +120,7 @@ async function displayWorks() {
             const card = document.createElement('div');
             card.className = 'item-card';
             card.innerHTML = `
-                <img src="${BASE_URL}/${work.image}" alt="${work.title}">
+                <img src="${work.image}" alt="${work.title}">
                 <div class="item-title">${work.title}</div>
                 <div class="item-text"><strong>Category:</strong> ${work.category}</div>
                 <div class="item-text">${work.description}</div>

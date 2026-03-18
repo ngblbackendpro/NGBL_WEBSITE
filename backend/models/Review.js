@@ -24,6 +24,9 @@ const reviewSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    imagePublicId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

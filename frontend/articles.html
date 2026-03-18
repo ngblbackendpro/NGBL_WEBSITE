@@ -27,21 +27,21 @@
     <meta http-equiv="Pragma" content="public">
 
     <!-- SEO Meta Tags -->
-    <title>Articles & Blogs - NGBL | Latest Insights and Trends</title>
-    <meta name="description" content="Explore expert articles and blogs on brand strategy, digital marketing, SEO, and business growth from NG BrandLab professionals.">
+    <title>Blogs - NGBL | Latest Insights and Trends</title>
+    <meta name="description" content="Explore the full NGBL blog archive with expert insights on brand strategy, digital marketing, SEO, and business growth.">
     <meta name="keywords" content="brand strategy articles, digital marketing blogs, SEO tips, business growth insights, content marketing, social media">
     <meta name="author" content="NG BrandLab">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph Tags - Optimized for Sharing -->
-    <meta property="og:title" content="Articles & Blogs - NGBL | Expert Insights">
+    <meta property="og:title" content="Blogs - NGBL | Expert Insights">
     <meta property="og:site_name" content="NG BrandLab">
-    <meta property="og:description" content="Explore expert articles and blogs on brand strategy, digital marketing, SEO, and business growth from NG BrandLab professionals.">
+    <meta property="og:description" content="Explore the full NGBL blog archive with expert insights on brand strategy, digital marketing, SEO, and business growth.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ngbl.com/articles.html">
-    <meta property="og:image" content="https://ngbl.com/img/og-image.jpg">
-    <meta property="og:image:secure_url" content="https://ngbl.com/img/og-image.jpg">
-    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:url" content="https://ngbl.com/blogs.html">
+    <meta property="og:image" content="https://ngbl.com/img/opengraph.png">
+    <meta property="og:image:secure_url" content="https://ngbl.com/img/opengraph.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="NG BrandLab - Expert Articles & Blogs on Marketing">
@@ -51,9 +51,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@ngbl">
     <meta name="twitter:creator" content="@ngbl">
-    <meta name="twitter:title" content="Articles & Blogs - NGBL">
-    <meta name="twitter:description" content="Explore expert articles and blogs from NG BrandLab on brand strategy and digital marketing.">
-    <meta name="twitter:image" content="https://ngbl.com/img/og-image.jpg">
+    <meta name="twitter:title" content="Blogs - NGBL">
+    <meta name="twitter:description" content="Explore expert blog posts from NG BrandLab on brand strategy and digital marketing.">
+    <meta name="twitter:image" content="https://ngbl.com/img/opengraph.png">
     <meta name="twitter:domain" content="ngbl.com">
     <meta name="twitter:image:alt" content="NG BrandLab Articles">
 
@@ -61,20 +61,20 @@
     <link rel="manifest" href="site.webmanifest">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css?v=2" media="screen">
+    <link rel="stylesheet" href="css/style.css?v=3" media="screen">
     <link rel="stylesheet" href="css/article.css?v=2" media="screen">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
-    <link rel="canonical" href="https://ngbl.com/articles.html">
+    <link rel="canonical" href="https://ngbl.com/blogs.html">
 
     <!-- JSON-LD Schema Markup -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Articles & Blogs - NGBL",
-        "url": "https://ngbl.com/articles.html",
-        "description": "Expert articles and blogs on brand strategy, digital marketing, and business growth",
+        "name": "Blogs - NGBL",
+        "url": "https://ngbl.com/blogs.html",
+        "description": "Expert blog posts on brand strategy, digital marketing, and business growth",
         "publisher": {
             "@type": "Organization",
             "name": "NG BrandLab",
@@ -96,41 +96,20 @@
 
     <main id="main-content" role="main">
         <!-- Articles & Blogs Section -->
-        <section class="blog-section articles-page" role="region" aria-label="All Articles and Blogs">
+        <section class="blog-section articles-page" role="region" aria-label="All blogs">
             <div class="blog-container">
                 <div class="section-header">
-                    <h1 class="section-title">Articles & Blogs</h1>
+                    <h1 class="section-title">Blogs</h1>
                     <div class="title-underline"></div>
-                    <p class="section-subtitle">Discover comprehensive insights, expert tips, and the latest trends in branding, marketing, and business growth</p>
+                    <p class="section-subtitle">Discover the latest insights, expert guidance, and practical strategies from the NGBL team.</p>
                 </div>
 
-                <div class="blog-grid blog-grid-full" id="articlesContainer">
+                <div class="blog-grid blog-grid-full" id="articlesContainer" aria-live="polite">
                          <!-- Blogs will load dynamically here -->
                 </div>
 
             </div>
         </section>
-
-        <!-- Blog Modal -->
-        <div class="blog-modal" id="blogModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <div class="blog-modal-overlay"></div>
-            <div class="blog-modal-content">
-                <button class="blog-modal-close" aria-label="Close modal">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="blog-modal-body">
-                    <img src="" alt="" class="blog-modal-image" id="modalImage">
-                    <div class="blog-modal-details">
-                        <div class="blog-modal-meta">
-                            <span class="blog-modal-date" id="modalDate"></span>
-                            <span class="blog-modal-category" id="modalCategory"></span>
-                        </div>
-                        <h2 class="blog-modal-title" id="modalTitle"></h2>
-                        <div class="blog-modal-text" id="modalContent"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 
     <!-- footer starts -->
@@ -138,11 +117,11 @@
     <!-- footer ends -->
 
     <!-- Main JavaScript Files (Optimized Load Order) -->
-    <script src="js/layout.js?v=2"></script>
+    <script src="js/layout.js?v=11"></script>
     <script src="js/config.js?v=2"></script>
     <script src="js/utils.js?v=2" defer></script>
-    <script src="js/Script.js?v=2" defer></script>
-    <script src="js/article.js?v=2" defer></script>
+    <script src="js/Script.js?v=3" defer></script>
+    <script src="js/article.js?v=3" defer></script>
 </body>
 
 </html>

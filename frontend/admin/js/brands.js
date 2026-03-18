@@ -126,7 +126,7 @@ async function displayBrands() {
             card.className = 'item-card';
 
             card.innerHTML = `
-                <img src="${BASE_URL}/${brand.image}" 
+                <img src="${brand.image || 'img/ngblfav.png'}" 
                      alt="${brand.name}" 
                      style="height: 100px; object-fit: contain;">
                 <div class="item-title">${brand.name}</div>

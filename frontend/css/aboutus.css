@@ -40,7 +40,7 @@
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 32px;
     margin-top: 60px;
 }
@@ -164,7 +164,7 @@
 
 .values-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 32px;
     margin-top: 60px;
 }
@@ -500,5 +500,9 @@ video {
 body {
     letter-spacing: 0.3px;
     word-spacing: 0.1em;
+    overflow-x: hidden;
 }
 
+[data-animate] {
+    opacity: 1 !important;
+}

@@ -38,7 +38,7 @@ function setupFormListener() {
 
             alert("Team member added!");
             form.reset();
-            blogSelectedImageData = null;
+            teamSelectedImageData = null;
             document.getElementById('teamImagePreview').style.display = 'none';
             document.getElementById('teamFileLabel').style.display = 'block';
             loadTeam();
@@ -112,7 +112,7 @@ async function loadTeam() {
         card.className = "item-card";
 
         card.innerHTML = `
-            <img src="${BASE_URL}/uploads/${member.image}" />
+            <img src="${member.image}" />
             <div class="item-title">${member.name}</div>
             <div class="item-text">${member.position}</div>
             <div class="item-text">${member.description}</div>

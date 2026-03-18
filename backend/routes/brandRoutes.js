@@ -1,29 +1,23 @@
 const express = require("express");
 const router = express.Router();
+
+const upload = require("../middleware/upload"); // ✅ centralized multer (memoryStorage)
+
 const {
   createBrand,
   getAllBrands,
   deleteBrand
 } = require("../controllers/brandController");
 
-const multer = require("multer");
+// ================= ROUTES =================
 
-/* ===============================
-   Multer Config
-================================ */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
-});
-
-const upload = multer({ storage });
-
+// CREATE BRAND
 router.post("/", upload.single("image"), createBrand);
+
+// GET ALL BRANDS
 router.get("/", getAllBrands);
+
+// DELETE BRAND
 router.delete("/:id", deleteBrand);
 
 module.exports = router;
