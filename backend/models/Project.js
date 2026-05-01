@@ -10,6 +10,11 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    projectDepartment: {
+      type: String,
+      enum: ["IT", "Music"],
+      required: true 
+    },
     description: {
       type: String,
       required: true,

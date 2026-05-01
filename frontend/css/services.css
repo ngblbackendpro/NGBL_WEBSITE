@@ -289,6 +289,8 @@
 .services-showcase {
     padding: 80px 20px;
     background: var(--color-black);
+    position: relative;
+    z-index: 1;
 }
 
 .services-showcase-container {
@@ -298,7 +300,8 @@
 
 .services-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    /* grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
     gap: 30px;
 }
 
@@ -544,15 +547,16 @@
     
     .services-categories,
     .projects-controls {
-        top: 60px;
+        top: 80px;
         padding: 30px 20px;
     }
-    
+
     .services-categories-container {
         justify-content: flex-start;
         overflow-x: auto;
         flex-wrap: nowrap;
         -webkit-overflow-scrolling: touch;
+        padding-inline: 2px;
     }
     
     .category-tab {
@@ -597,6 +601,16 @@
     .cta-buttons .btn {
         width: 100%;
         max-width: 300px;
+    }
+    .services-categories {
+        position: relative;
+        top: 0;
+        z-index: 10;
+        padding: 20px 16px;
+    }
+
+    .services-showcase {
+        padding: 40px 16px 60px;
     }
 }
 

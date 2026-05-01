@@ -6,7 +6,7 @@ const cloudinary = require("../config/cloudinary");
 ============================= */
 exports.createProject = async (req, res) => {
   try {
-    const { title, heading, description, date, link, status } = req.body;
+    const { title, heading, projectDepartment, description, date, link, status } = req.body;
 
     let imageUrl = null;
     let imagePublicId = null;
@@ -20,6 +20,7 @@ exports.createProject = async (req, res) => {
     const project = await Project.create({
       title,
       heading,
+      projectDepartment,
       description,
       date,
       link,
@@ -39,16 +40,49 @@ exports.createProject = async (req, res) => {
   }
 };
 
+
+exports.updateProject = async (req, res) => {
+  try{
+    const { title, heading, projectDepartment, description, date, link, status } = req.body;
+    const project = await Project.findById(req.params.id);
+    let imageUrl = project.image;
+    let imagePublicId = project.imagePublicId;
+
+    if(req.file){
+      if(project.imagePublicId){
+        await cloudinary.uploader.destroy(project.imagePublicId);
+      }
+      imageUrl = req.file.path;
+      imagePublicId = req.file.filename;
+    }
+    project.title = title;
+    project.heading = heading;
+    project.projectDepartment = projectDepartment;
+    project.description = description;
+    project.date = date;
+    project.link = link;
+    project.status = status;
+    project.image = imageUrl;
+    project.imagePublicId = imagePublicId;
+
+    await project.save();
+    res.status(201).json({status: "success", project});
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+};
+
+
+
 /* =============================
    GET ALL PROJECTS
 ============================= */
 exports.getProjects = async (req, res) => {
   try {
-    const { status } = req.query;
-
-    let filter = {};
-    if (status) filter.status = status;
-
+    const filter = {};
+    if (req.query.projectDepartment) {
+      filter.projectDepartment = req.query.projectDepartment;
+    }
     const projects = await Project.find(filter).sort({ createdAt: -1 });
 
     res.json(projects);

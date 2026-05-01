@@ -6,11 +6,14 @@ const { BASE_URL, API } = window.ADMIN_CONFIG;
 const API_URL = BASE_URL + API.SERVICES;
 
 let selectedServiceImage = null;
+let currentDept = "all";
+let editingServiceId = null;
 
 
 document.addEventListener("DOMContentLoaded", () => {
   loadServices();
   setupServiceImagePreview();
+  setupDeptTabs();
 
   document
     .getElementById("addServiceForm")
@@ -20,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData();
       formData.append("title", document.getElementById("serviceTitle").value);
       formData.append("description", document.getElementById("serviceDescription").value);
+      formData.append("serviceDepartment", document.getElementById("serviceDepartment").value);
       formData.append("price", document.getElementById("servicePrice").value);
       formData.append("duration", document.getElementById("serviceDuration").value);
       formData.append("keywords", document.getElementById("serviceKeywords").value);
@@ -32,10 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          body: formData
-        });
+          const url = editingServiceId ? `${API_URL}/${editingServiceId}` : API_URL;
+          const method = editingServiceId ? "PUT" : "POST";
+          const response = await fetch(url, { 
+            method: method, 
+            body: formData 
+          });
 
         const data = await response.json();
 
@@ -43,11 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error(data.error || "Error adding service");
         }
 
-        alert(data.message);
+        alert(editingServiceId ? "✔ Service updated successfully!" : data.message);
         document.getElementById("addServiceForm").reset();
         document.getElementById("imagePreview").style.display = "none";
         document.getElementById("fileInputLabel").style.display = "block";
         selectedServiceImage = null;
+        editingServiceId = null;
+        document.getElementById("serviceSubmitBtn").textContent = "✔ Add Service";
+        document.getElementById("serviceEditModeBar").style.display = "none";
+        document.getElementById("cancelServiceEditBtn").style.display = "none";
         loadServices();
 
       } catch (error) {
@@ -55,6 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 });
+
+function setupDeptTabs() {
+    const tabs = document.querySelectorAll(".dept-tab");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            currentDept = tab.dataset.dept;
+            loadServices();
+        });
+    });
+}
 
 function setupServiceImagePreview() {
   const fileInput = document.getElementById("serviceImage");
@@ -98,7 +120,10 @@ function setupServiceImagePreview() {
 
 async function loadServices() {
   try {
-    const response = await fetch(API_URL);
+    const url = currentDept === "all" 
+        ? API_URL 
+        : `${API_URL}?serviceDepartment=${currentDept}`;
+    const response = await fetch(url);
     const services = await response.json();
 
     const container = document.getElementById("servicesList");
@@ -122,13 +147,18 @@ async function loadServices() {
         }
         <div class="item-title">${service.title}</div>
         <div class="item-text">${service.description}</div>
+        ${service.serviceDepartment
+            ? `<div><strong>🏢 Department:</strong> ${service.serviceDepartment}</div>`
+            : ""
+        }
         ${
           service.price
             ? `<div><strong>💰 Price:</strong> ${service.price}</div>`
             : ""
         }
         <div class="item-actions">
-          <button onclick="deleteService('${service._id}')">🗑️ Delete</button>
+          <button class="btn-edit" onclick="editService('${service._id}')">✏️ Edit</button>
+          <button class="btn-delete" onclick="deleteService('${service._id}')">🗑️ Delete</button>
         </div>
       `;
 
@@ -152,5 +182,60 @@ async function deleteService(id) {
 }
 
 window.deleteService = deleteService;
+
+
+async function editService(id) {
+    try {
+        const response = await fetch(API_URL);
+        const services = await response.json();
+        const service = services.find(s => s._id === id);
+        if (!service) { alert("Service not found"); return; }
+
+        editingServiceId = id;
+
+        document.getElementById("serviceTitle").value = service.title || '';
+        document.getElementById("serviceDescription").value = service.description || '';
+        document.getElementById("serviceDepartment").value = service.serviceDepartment || '';
+        document.getElementById("servicePrice").value = service.price || '';
+        document.getElementById("serviceDuration").value = service.duration || '';
+        document.getElementById("serviceKeywords").value = service.keywords ? service.keywords.join(', ') : '';
+        document.getElementById("serviceCategory").value = service.category || '';
+
+        // Show existing image
+        if (service.image) {
+            document.getElementById("previewImage").src = service.image;
+            document.getElementById("imagePreview").style.display = "block";
+            document.getElementById("fileInputLabel").style.display = "none";
+        }
+
+        document.getElementById("serviceSubmitBtn").textContent = "✔ Update Service";
+        document.getElementById("serviceEditModeBar").style.display = "block";
+        document.getElementById("cancelServiceEditBtn").style.display = "inline-block";
+
+        setTimeout(() => {
+            document.getElementById("addServiceForm").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 100);
+
+    } catch (error) {
+        console.error(error);
+        alert("Error loading service");
+    }
+}
+
+function cancelServiceEdit() {
+    editingServiceId = null;
+    document.getElementById("addServiceForm").reset();
+    document.getElementById("imagePreview").style.display = "none";
+    document.getElementById("fileInputLabel").style.display = "block";
+    document.getElementById("serviceSubmitBtn").textContent = "✔ Add Service";
+    document.getElementById("serviceEditModeBar").style.display = "none";
+    document.getElementById("cancelServiceEditBtn").style.display = "none";
+}
+
+window.editService = editService;
+window.cancelServiceEdit = cancelServiceEdit;
 
 })();

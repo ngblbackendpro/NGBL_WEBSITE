@@ -3,7 +3,35 @@
 const { BASE_URL, API } = window.ADMIN_CONFIG;
 
 const API_URL = BASE_URL + API.REVIEWS;
+
+let editMode = false;
+let editReviewId = null;
 let reviewSelectedImageData = null;
+
+function showFlashMessage(message, type = 'success') {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flash-message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+    `;
+
+    document.body.appendChild(messageDiv);
+
+    setTimeout(() => {
+        messageDiv.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => messageDiv.remove(), 300);
+    }, 3000);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     setupFormListener();
@@ -86,22 +114,30 @@ function setupFormListener() {
         }
 
         try {
-            const response = await fetch(API_URL, {
-                method: "POST",
+            const url = editMode ? `${API_URL}/${editReviewId}` : API_URL;
+            const method = editMode ? "PUT" : "POST";
+
+            const response = await fetch(url, {
+                method: method,
                 body: formData
             });
 
             const data = await response.json();
 
             if (data.success) {
-                alert('✔ Review added successfully!');
+                alert(editMode ? "✔ Review has Updated" : '✔ Review added successfully!');
                 form.reset();
                 reviewSelectedImageData = null;
 
                 document.getElementById('reviewImagePreview').style.display = 'none';
                 document.getElementById('reviewFileLabel').style.display = 'block';
 
-                displayReviews();
+                    editMode = false;
+                    editReviewId = null;
+                    document.getElementById('submitBtn').textContent = '✔ Add Review';
+                    const cancelEditBtn = document.getElementById('cancelEditBtn');
+                    if (cancelEditBtn) cancelEditBtn.style.display = 'none'; // 
+                    displayReviews();
             } else {
                 alert(data.message || 'Error adding review', 'error');
             }
@@ -148,6 +184,7 @@ async function displayReviews() {
                     <span>Added: ${new Date(review.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div class="item-actions">
+                    <button class="btn-edit" onclick="editReview('${review._id}')">✏️ Edit</button>
                     <button class="btn-delete" onclick="deleteReview('${review._id}')">🗑️ Delete</button>
                 </div>
             `;
@@ -185,5 +222,72 @@ async function deleteReview(id) {
 }
 
 window.deleteReview = deleteReview;
+
+
+async function editReview(id) {
+    try {
+        const response = await fetch(API_URL);
+        const reviews = await response.json();
+        const review = reviews.find(r => r._id === id);
+        if (!review) return;
+
+        document.getElementById('reviewerName').value = review.name;
+        document.getElementById('reviewerTitle').value = review.title;
+        document.getElementById('reviewDescription').value = review.description;
+        document.getElementById('reviewRating').value = review.rating;
+        document.getElementById('reviewerEmail').value = review.email || '';
+
+        editMode = true;
+        editReviewId = id;
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.textContent = '✔ Update Review';
+
+        // Show cancel button
+        let cancelEditBtn = document.getElementById('cancelEditBtn');
+        if (!cancelEditBtn) {
+            cancelEditBtn = document.createElement('button');
+            cancelEditBtn.type = 'button';
+            cancelEditBtn.id = 'cancelEditBtn';
+            cancelEditBtn.className = 'btn';
+            cancelEditBtn.style.backgroundColor = '#dc3545';
+            cancelEditBtn.style.marginLeft = '10px';
+            cancelEditBtn.textContent = '✕ Cancel Edit';
+            cancelEditBtn.addEventListener('click', cancelEditMode);
+            submitBtn.parentNode.insertBefore(cancelEditBtn, submitBtn.nextSibling);
+        }
+        cancelEditBtn.style.display = 'inline-block';
+
+        // Scroll AFTER DOM updates
+        setTimeout(() => {
+            document.getElementById('addReviewForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+
+        showFlashMessage("✏️ Edit mode Enabled", "success");
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+window.editReview = editReview
+
+
+function cancelEditMode() {
+    editMode = false;
+    editReviewId = null;
+
+    document.getElementById('addReviewForm').reset();
+    document.getElementById('reviewImagePreview').style.display = 'none';
+    document.getElementById('reviewFileLabel').style.display = 'block';
+    document.getElementById('submitBtn').textContent = '✔ Add Review';
+
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    if (cancelEditBtn) cancelEditBtn.style.display = 'none';
+
+    showFlashMessage("✕ Edit cancelled", "error");
+}
 
 })();

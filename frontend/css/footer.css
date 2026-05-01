@@ -1,0 +1,15 @@
+/* Footer company info style */
+.footer-company-info {
+    margin-top: 0.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    text-align: left;
+    line-height: 1.5;
+    word-break: break-word;
+}
+@media (max-width: 900px) {
+    .footer-company-info {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+}

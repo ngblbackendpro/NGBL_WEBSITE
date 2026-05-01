@@ -1,3 +1,4 @@
+(function () {
 const { BASE_URL, API } = window.APP_CONFIG;
 
 const params = new URLSearchParams(window.location.search);
@@ -61,14 +62,17 @@ if (type && pageMap[type]) {
             }
 
             if (contentElement) {
-                contentElement.innerHTML = data.content || pageMap[type].fallbackContent;
+                const apiContent = data && typeof data.content === "string" ? data.content.trim() : "";
+                contentElement.innerHTML = apiContent || pageMap[type].fallbackContent;
             }
         })
         .catch(err => {
             console.error(err);
             const contentElement = document.getElementById("pageContent");
             if (contentElement) {
-                contentElement.innerHTML = "<p>Unable to load this page right now.</p>";
+                contentElement.innerHTML = pageMap[type].fallbackContent;
             }
         });
 }
+
+})();

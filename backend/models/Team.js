@@ -4,6 +4,10 @@ const teamSchema = new mongoose.Schema({
   name: { type: String, required: true },
   position: { type: String, required: true },
   description: { type: String, required: true },
+  department: { 
+      type: String, 
+      enum: ["IT", "Music"],
+  },
   imagePublicId: {
     type: String,
   },

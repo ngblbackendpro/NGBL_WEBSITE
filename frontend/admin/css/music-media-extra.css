@@ -1,0 +1,24 @@
+/* ── Music Media Admin Extra Styles ───────────────────────────────── */
+/* Add these rules to the bottom of your existing dashboard.css file  */
+
+/* Override grid for media — show as tighter image gallery */
+.media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.media-card {
+    padding: 12px;
+    border-left: 4px solid #3498db;
+    background: #f8f9fa;
+}
+
+.media-thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    display: block;
+    margin-bottom: 0;
+}

@@ -11,6 +11,8 @@ const DASHBOARD_API = BASE_URL + API.DASHBOARD;
 document.addEventListener('DOMContentLoaded', function () {
     // Check if user is logged in
     checkLogin();
+
+    injectSelectedWorkNavItem();
     
     // Update current date
     updateCurrentDate();
@@ -25,6 +27,33 @@ document.addEventListener('DOMContentLoaded', function () {
     setupNotificationBell();
     setInterval(loadNotifications, 5000);
 });
+
+function injectSelectedWorkNavItem() {
+    const navMenu = document.querySelector(".nav-menu");
+    if (!navMenu) {
+        return;
+    }
+
+    const hasSelectedWork = navMenu.querySelector('a[href="music-blogs.html"]');
+    if (!hasSelectedWork) {
+        const projectsLink = navMenu.querySelector('a[href="projects.html"]');
+        if (projectsLink) {
+            const selectedWorkLink = document.createElement("a");
+            selectedWorkLink.href = "music-blogs.html";
+            selectedWorkLink.className = "nav-item";
+            selectedWorkLink.textContent = "🎵 Selected Work";
+            projectsLink.insertAdjacentElement("afterend", selectedWorkLink);
+        }
+    }
+
+    const currentPage = (window.location.pathname.split("/").pop() || "").toLowerCase();
+    if (currentPage === "music-blogs.html") {
+        const selectedWorkLink = navMenu.querySelector('a[href="music-blogs.html"]');
+        if (selectedWorkLink) {
+            selectedWorkLink.classList.add("active");
+        }
+    }
+}
 
 function checkLogin() {
     const token = localStorage.getItem("token");
@@ -311,63 +340,65 @@ const modal = document.getElementById("passwordModal");
 const openBtn = document.getElementById("changePasswordBtn");
 const closeBtn = document.querySelector(".close-modal");
 
-openBtn.addEventListener("click", function(e){
-    e.preventDefault();
-    modal.style.display = "flex";
-});
+if (modal && openBtn && closeBtn) {
+    openBtn.addEventListener("click", function(e){
+        e.preventDefault();
+        modal.style.display = "flex";
+    });
 
-closeBtn.addEventListener("click", function(){
-    modal.style.display = "none";
-});
-
-window.addEventListener("click", function(e){
-    if(e.target === modal){
+    closeBtn.addEventListener("click", function(){
         modal.style.display = "none";
-    }
-});
+    });
 
-
-document.getElementById("changePasswordForm")
-.addEventListener("submit", async function(e){
-
-e.preventDefault();
-
-const oldPassword = document.getElementById("oldPassword").value;
-const newPassword = document.getElementById("newPassword").value;
-const confirmPassword = document.getElementById("confirmPassword").value;
-
-if(newPassword !== confirmPassword){
-    alert("Passwords do not match");
-    return;
+    window.addEventListener("click", function(e){
+        if(e.target === modal){
+            modal.style.display = "none";
+        }
+    });
 }
 
-try{
+const changePasswordForm = document.getElementById("changePasswordForm");
+if (changePasswordForm) {
+    changePasswordForm.addEventListener("submit", async function(e) {
 
-const response = await fetch(BASE_URL + "/api/auth/change-password",{
-    method:"PUT",
-    headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + localStorage.getItem("token")
-    },
-    body:JSON.stringify({
-        oldPassword,
-        newPassword
-    })
-});
+        e.preventDefault();
 
-const data = await response.json();
+        const oldPassword = document.getElementById("oldPassword").value;
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
 
-if(response.ok){
-    alert("Password Updated Successfully");
-    modal.style.display = "none";
-}else{
-    alert(data.message);
+        if (newPassword !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await fetch(BASE_URL + "/api/auth/change-password", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    oldPassword,
+                    newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Password Updated Successfully");
+                modal.style.display = "none";
+            } else {
+                alert(data.message);
+            }
+
+        } catch(err) {
+            alert("Server Error");
+        }
+
+    });
 }
-
-}catch(err){
-    alert("Server Error");
-}
-
-});
 
 })();

@@ -132,13 +132,6 @@ function initSlider(sliderEl, options = {}) {
     let timer;
     let isTransitioning = false;
 
-    const originalSlides = [...slides];
-    originalSlides.forEach(slide => {
-        const clone = slide.cloneNode(true);
-        track.appendChild(clone);
-    });
-    slides = Array.from(track.querySelectorAll('.slide'));
-
     const computePerView = () => {
         const w = window.innerWidth;
         if (w <= 640) return 1;
@@ -146,7 +139,7 @@ function initSlider(sliderEl, options = {}) {
         return 3;
     };
 
-    const pageCount = () => Math.max(1, Math.ceil(originalSlides.length / perView));
+    const pageCount = () => Math.max(1, Math.ceil(slides.length / perView));
 
     const buildDots = () => {
         if (!dotsWrap) return;
@@ -175,6 +168,10 @@ function initSlider(sliderEl, options = {}) {
             slide.style.width = `${slideWidth}px`;
         });
 
+        // Clamp index to valid range
+        if (index < 0) index = 0;
+        if (index > pageCount() - 1) index = pageCount() - 1;
+
         const step = slideWidth * perView;
 
         if (!animate) {
@@ -189,7 +186,7 @@ function initSlider(sliderEl, options = {}) {
         }
 
         if (dotsWrap) {
-            const dotIndex = index % pageCount();
+            const dotIndex = index;
             Array.from(dotsWrap.children).forEach((dot, i) => {
                 dot.classList.toggle('active', i === dotIndex);
                 dot.setAttribute('aria-current', i === dotIndex ? 'true' : 'false');
@@ -201,13 +198,11 @@ function initSlider(sliderEl, options = {}) {
         if (isTransitioning) return;
         isTransitioning = true;
         index++;
+        if (index >= pageCount()) {
+            index = 0;
+        }
         update(true);
-
         setTimeout(() => {
-            if (index >= pageCount()) {
-                index = 0;
-                update(false);
-            }
             isTransitioning = false;
         }, 450);
     };
@@ -215,24 +210,14 @@ function initSlider(sliderEl, options = {}) {
     const prev = () => {
         if (isTransitioning) return;
         isTransitioning = true;
-
-        if (index <= 0) {
-            index = pageCount();
-            update(false);
-            setTimeout(() => {
-                index--;
-                update(true);
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 450);
-            }, 50);
-        } else {
-            index--;
-            update(true);
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 450);
+        index--;
+        if (index < 0) {
+            index = pageCount() - 1;
         }
+        update(true);
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 450);
     };
 
     const restart = () => {
@@ -276,7 +261,7 @@ function initSliders() {
  */
 function initMobileMenu() {
     const navToggle = document.getElementById('nav-toggle');
-    const navLinks = document.querySelectorAll('.nav-menu a');
+    const navLinks = document.querySelectorAll('.nav-menu a:not(.nav-dropdown-toggle)');
 
     if (navToggle && navLinks.length) {
         navLinks.forEach(link => {
@@ -567,16 +552,141 @@ async function loadReviewsFromAPI() {
 }
 
 
+// async function loadHomeDataFromAPI() {
+//     try {
+//         const response = await fetch(BASE_URL + API.HOME);
+//         const data = await response.json();
+
+//         // console.log("Home Data:", data);
+
+//         /* =============================
+//            Update Stats Section
+//         ============================= */
+
+//         // Experience Years
+//         if (data.expYears !== undefined) {
+//             const expCounter = document.querySelector('.stat-card-orange .counter');
+//             if (expCounter) {
+//                 expCounter.textContent = data.expYears;
+//                 expCounter.setAttribute("data-target", data.expYears);
+//             }
+//         }
+        
+
+
+
+//         if (data.totalProjects !== undefined) {
+//             const projectCounter = document.querySelector('.stat-card-cyan .counter');
+
+//             if (projectCounter) {
+
+//                 const realCount = data.totalProjects;
+
+//                 // Always animate up to 100 if >100
+//                 const animationTarget = realCount > 100 ? 100 : realCount;
+
+//                 projectCounter.setAttribute("data-target", animationTarget);
+
+//                 // If more than 100 → show "+" after animation
+//                 if (realCount > 100) {
+//                     projectCounter.dataset.showPlus = "true";
+//                 } else {
+//                     delete projectCounter.dataset.showPlus;
+//                 }
+//             }
+//         }
+
+//         // Offices Count
+//         if (data.offices && data.offices.length) {
+
+//     // Update counter
+//     const officeCounter = document.querySelector('.stat-card-purple .counter');
+//     if (officeCounter) {
+//         officeCounter.textContent = data.offices.length;
+//         officeCounter.setAttribute("data-target", data.offices.length);
+//     }
+
+//     // Update locations text
+//     const officeText = document.getElementById('officeLocations');
+//     if (officeText) {
+//         const locations = data.offices.map(office => office.location);
+//         officeText.textContent = locations.join(', ');
+//     }
+// }
+
+
+//         /* =============================
+//            Update Footer Branches
+//         ============================= */
+
+//         const branchList = document.getElementById('footerBranches');
+//         if (branchList && data.offices) {
+//             branchList.innerHTML = '';
+
+//             data.offices.forEach(office => {
+//                 branchList.innerHTML += `
+//                     <li>
+//                         <i class="fas fa-map-pin"></i>
+//                         <a href="#">${office.location}</a>
+//                     </li>
+//                 `;
+//             });
+
+
+
+//             /* =============================
+//                 Update Footer Contact Info
+//                 ============================= */
+
+//                 if (data.companyInfo) {
+
+//                     const phoneEl = document.getElementById("footerPhone");
+//                     const emailEl = document.getElementById("footerEmail");
+//                     const addressEl = document.getElementById("footerAddress");
+
+//                     if (phoneEl && data.companyInfo.phone) {
+//                         phoneEl.textContent = data.companyInfo.phone;
+//                         phoneEl.href = `tel:${data.companyInfo.phone}`;
+//                     }
+
+//                     if (emailEl && data.companyInfo.email) {
+//                         emailEl.textContent = data.companyInfo.email;
+//                         emailEl.href = `mailto:${data.companyInfo.email}`;
+//                     }
+
+//                     if (addressEl && data.companyInfo.address) {
+//                         addressEl.textContent = data.companyInfo.address;
+//                     }
+//                 }
+//             /* =============================
+//             Update Social Media Icons
+//             ============================= */
+
+//             if (data.socialLinks) {
+
+//                 const facebook = document.getElementById('facebookIcon');
+//                 const twitter = document.getElementById('twitterIcon');
+//                 const instagram = document.getElementById('instagramIcon');
+//                 const linkedin = document.getElementById('linkedinIcon');
+//                 const youtube = document.getElementById('youtubeIcon');
+
+//                 if (facebook) facebook.href = data.socialLinks.facebook || "#";
+//                 if (twitter) twitter.href = data.socialLinks.twitter || "#";
+//                 if (instagram) instagram.href = data.socialLinks.instagram || "#";
+//                 if (linkedin) linkedin.href = data.socialLinks.linkedin || "#";
+//                 if (youtube) youtube.href = data.socialLinks.youtube || "#";
+//             }
+//         }
+
+//     } catch (error) {
+//         console.error("Error loading home data:", error);
+//     }
+// }
+
 async function loadHomeDataFromAPI() {
     try {
         const response = await fetch(BASE_URL + API.HOME);
         const data = await response.json();
-
-        // console.log("Home Data:", data);
-
-        /* =============================
-           Update Stats Section
-        ============================= */
 
         // Experience Years
         if (data.expYears !== undefined) {
@@ -586,23 +696,14 @@ async function loadHomeDataFromAPI() {
                 expCounter.setAttribute("data-target", data.expYears);
             }
         }
-        
 
-
-
+        // Total Projects
         if (data.totalProjects !== undefined) {
             const projectCounter = document.querySelector('.stat-card-cyan .counter');
-
             if (projectCounter) {
-
                 const realCount = data.totalProjects;
-
-                // Always animate up to 100 if >100
                 const animationTarget = realCount > 100 ? 100 : realCount;
-
                 projectCounter.setAttribute("data-target", animationTarget);
-
-                // If more than 100 → show "+" after animation
                 if (realCount > 100) {
                     projectCounter.dataset.showPlus = "true";
                 } else {
@@ -613,90 +714,59 @@ async function loadHomeDataFromAPI() {
 
         // Offices Count
         if (data.offices && data.offices.length) {
-
-    // Update counter
-    const officeCounter = document.querySelector('.stat-card-purple .counter');
-    if (officeCounter) {
-        officeCounter.textContent = data.offices.length;
-        officeCounter.setAttribute("data-target", data.offices.length);
-    }
-
-    // Update locations text
-    const officeText = document.getElementById('officeLocations');
-    if (officeText) {
-        const locations = data.offices.map(office => office.location);
-        officeText.textContent = locations.join(', ');
-    }
-}
-
-
-        /* =============================
-           Update Footer Branches
-        ============================= */
-
-        const branchList = document.getElementById('footerBranches');
-        if (branchList && data.offices) {
-            branchList.innerHTML = '';
-
-            data.offices.forEach(office => {
-                branchList.innerHTML += `
-                    <li>
-                        <i class="fas fa-map-pin"></i>
-                        <a href="#">${office.location}</a>
-                    </li>
-                `;
-            });
-
-
-
-            /* =============================
-                Update Footer Contact Info
-                ============================= */
-
-                if (data.companyInfo) {
-
-                    const phoneEl = document.getElementById("footerPhone");
-                    const emailEl = document.getElementById("footerEmail");
-                    const addressEl = document.getElementById("footerAddress");
-
-                    if (phoneEl && data.companyInfo.phone) {
-                        phoneEl.textContent = data.companyInfo.phone;
-                        phoneEl.href = `tel:${data.companyInfo.phone}`;
-                    }
-
-                    if (emailEl && data.companyInfo.email) {
-                        emailEl.textContent = data.companyInfo.email;
-                        emailEl.href = `mailto:${data.companyInfo.email}`;
-                    }
-
-                    if (addressEl && data.companyInfo.address) {
-                        addressEl.textContent = data.companyInfo.address;
-                    }
-                }
-            /* =============================
-            Update Social Media Icons
-            ============================= */
-
-            if (data.socialLinks) {
-
-                const facebook = document.getElementById('facebookIcon');
-                const twitter = document.getElementById('twitterIcon');
-                const instagram = document.getElementById('instagramIcon');
-                const linkedin = document.getElementById('linkedinIcon');
-                const youtube = document.getElementById('youtubeIcon');
-
-                if (facebook) facebook.href = data.socialLinks.facebook || "#";
-                if (twitter) twitter.href = data.socialLinks.twitter || "#";
-                if (instagram) instagram.href = data.socialLinks.instagram || "#";
-                if (linkedin) linkedin.href = data.socialLinks.linkedin || "#";
-                if (youtube) youtube.href = data.socialLinks.youtube || "#";
+            const officeCounter = document.querySelector('.stat-card-purple .counter');
+            if (officeCounter) {
+                officeCounter.textContent = data.offices.length;
+                officeCounter.setAttribute("data-target", data.offices.length);
             }
+
+            const officeText = document.getElementById('officeLocations');
+            if (officeText) {
+                const locations = data.offices.map(office => office.location);
+                officeText.textContent = locations.join(', ');
+            }
+        }
+
+        // Footer Contact Info
+        if (data.companyInfo) {
+            const phoneEl = document.getElementById("footerPhone");
+            const emailEl = document.getElementById("footerEmail");
+            const addressEl = document.getElementById("footerAddress");
+
+            if (phoneEl && data.companyInfo.phone) {
+                phoneEl.textContent = data.companyInfo.phone;
+                phoneEl.href = `tel:${data.companyInfo.phone}`;
+            }
+            if (emailEl && data.companyInfo.email) {
+                emailEl.textContent = data.companyInfo.email;
+                emailEl.href = `mailto:${data.companyInfo.email}`;
+            }
+            if (addressEl && data.companyInfo.address) {
+                addressEl.textContent = data.companyInfo.address;
+            }
+        }
+
+        // Social Media Icons
+        if (data.socialLinks) {
+            const facebook  = document.getElementById('facebookIcon');
+            const twitter   = document.getElementById('twitterIcon');
+            const instagram = document.getElementById('instagramIcon');
+            const linkedin  = document.getElementById('linkedinIcon');
+            const youtube   = document.getElementById('youtubeIcon');
+
+            if (facebook)  facebook.href  = data.socialLinks.facebook  || "#";
+            if (twitter)   twitter.href   = data.socialLinks.twitter   || "#";
+            if (instagram) instagram.href = data.socialLinks.instagram || "#";
+            if (linkedin)  linkedin.href  = data.socialLinks.linkedin  || "#";
+            if (youtube)   youtube.href   = data.socialLinks.youtube   || "#";
         }
 
     } catch (error) {
         console.error("Error loading home data:", error);
     }
 }
+
+
 
 
 async function loadProjectsFromAPI() {

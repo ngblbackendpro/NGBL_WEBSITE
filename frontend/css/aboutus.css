@@ -254,7 +254,10 @@
         font-size: 1rem;
         text-align: left;
     }
+    
 }
+
+
 
 
 /* ==========================================
@@ -505,4 +508,57 @@ body {
 
 [data-animate] {
     opacity: 1 !important;
+}
+
+/* Team Filter Tabs */
+.team-filter-tabs {
+    display: flex;
+    gap: 12px;
+    margin-top: 48px;
+    margin-bottom: -28px;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+.filter-tab {
+    padding: 10px 28px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.filter-tab:hover {
+    border-color: var(--color-purple-primary);
+    color: var(--color-white);
+    background: rgba(124, 58, 237, 0.12);
+}
+
+.filter-tab.active {
+    background: var(--color-purple-primary);
+    border-color: var(--color-purple-primary);
+    color: var(--color-white);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Fade animation for filtered cards */
+.team-card {
+    animation: cardFadeIn 0.35s ease forwards;
+}
+
+@keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.team-card.hidden {
+    display: none;
+}
+
+.logo img {
+    margin-top: 12px;
 }

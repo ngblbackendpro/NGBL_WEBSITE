@@ -4,12 +4,12 @@
     
     <!-- Homepage -->
     <url>
-        <loc>https://ngbl.com/</loc>
+        <loc>https://ngbl.in/</loc>
         <lastmod>2026-02-08</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
-            <image:loc>https://ngbl.com/img/NGBL_Logo-removebg-preview.png</image:loc>
+            <image:loc>https://ngbl.in/img/NGBL_Logo-removebg-preview.png</image:loc>
             <image:title>NG BrandLab Logo</image:title>
             <image:caption>Professional Brand Strategy and Market Consulting</image:caption>
         </image:image>
@@ -17,7 +17,7 @@
     
     <!-- About Us Page -->
     <url>
-        <loc>https://ngbl.com/aboutus.html</loc>
+        <loc>https://ngbl.in/aboutus.html</loc>
         <lastmod>2026-02-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -25,7 +25,7 @@
     
     <!-- Articles Page -->
     <url>
-        <loc>https://ngbl.com/articles.html</loc>
+        <loc>https://ngbl.in/articles.html</loc>
         <lastmod>2026-03-16</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -33,7 +33,7 @@
 
     <!-- Blogs Page -->
     <url>
-        <loc>https://ngbl.com/blogs.html</loc>
+        <loc>https://ngbl.in/blogs.html</loc>
         <lastmod>2026-03-16</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -41,7 +41,7 @@
 
     <!-- FAQ Page -->
     <url>
-        <loc>https://ngbl.com/faq.html</loc>
+        <loc>https://ngbl.in/faq.html</loc>
         <lastmod>2026-03-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -49,7 +49,7 @@
 
     <!-- Privacy Policy Page -->
     <url>
-        <loc>https://ngbl.com/privacy-policy.html</loc>
+        <loc>https://ngbl.in/privacy-policy.html</loc>
         <lastmod>2026-03-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -57,7 +57,7 @@
 
     <!-- Terms and Conditions Page -->
     <url>
-        <loc>https://ngbl.com/terms-and-conditions.html</loc>
+        <loc>https://ngbl.in/terms-and-conditions.html</loc>
         <lastmod>2026-03-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -65,7 +65,7 @@
 
     <!-- NGBL Subdomains Page -->
     <url>
-        <loc>https://ngbl.com/subdomains.html</loc>
+        <loc>https://ngbl.in/subdomains.html</loc>
         <lastmod>2026-03-09</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -73,7 +73,7 @@
     
     <!-- Client Login -->
     <url>
-        <loc>https://ngbl.com/client-login.html</loc>
+        <loc>https://ngbl.in/client-login.html</loc>
         <lastmod>2026-02-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
@@ -81,7 +81,7 @@
     
     <!-- Register -->
     <url>
-        <loc>https://ngbl.com/register.html</loc>
+        <loc>https://ngbl.in/register.html</loc>
         <lastmod>2026-02-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>

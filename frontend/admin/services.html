@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services - Admin Panel</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260420">
 </head>
 <body>
     <div class="admin-container">
@@ -25,6 +25,12 @@
                 <a href="team.html" class="nav-item">👥 Team Members</a>
                 <a href="services.html" class="nav-item active">🛠️ Services</a>
                 <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="music-blogs.html" class="nav-item">🎵 Music Blogs</a>
+                <a href="testimonials.html" class="nav-item">💬 Testimonials</a>
+                <a href="music-media.html" class="nav-item">🎵 Music Media</a>
+                <a href="music-partners.html" class="nav-item active">🤝 Music Partners</a>
+                <a href="music-compliance.html" class="nav-item active">📋 Music Compliance</a>
+
                 <a href="index.html" class="nav-item logout">🚪 Logout</a>
             </nav>
         </aside>
@@ -50,6 +56,11 @@
                     <form id="addServiceForm" class="form-group">
                         <input type="text" id="serviceTitle" placeholder="Service Title" required>
                         <textarea id="serviceDescription" placeholder="Service Description" rows="5" required></textarea>
+                        <select id="serviceDepartment">
+                            <option value="">-- Select Department --</option>
+                            <option value="IT">IT</option>
+                            <option value="Music">Music</option>
+                        </select>
                         <input type="text" id="servicePrice" placeholder="Service Price (optional)">
                         <input type="text" id="serviceDuration" placeholder="duration">
                         <input type="text" id="serviceKeywords" placeholder="Keywords (comma-separated, optional)">
@@ -64,13 +75,22 @@
                             📤 Select Service Image
                             <input type="file" id="serviceImage" accept="image/*">
                         </label>
-                        <button type="submit" class="btn">✔ Add Service</button>
+                        <div id="serviceEditModeBar" style="display:none; background:#fff3cd; border:1px solid #ffc107; padding:10px 15px; border-radius:5px; margin-bottom:10px; color:#856404;">
+                            ✏️ You are editing a service. Submit to save changes.
+                        </div>
+                        <button type="submit" id="serviceSubmitBtn" class="btn">✔ Add Service</button>
+                        <button type="button" id="cancelServiceEditBtn" style="display:none; background:#dc3545; color:white; border:none; padding:12px 20px; border-radius:5px; font-weight:600; cursor:pointer; margin-left:10px;" onclick="cancelServiceEdit()">✕ Cancel Edit</button>
                     </form>
                 </div>
 
                 <!-- Services List -->
                 <div class="form-section">
                     <h2>📋 Current Services</h2>
+                     <div class="dept-tabs">
+                        <button class="dept-tab active" data-dept="all">🛠️ All Services</button>
+                        <button class="dept-tab" data-dept="IT">💻 IT Services</button>
+                        <button class="dept-tab" data-dept="Music">🎵 Music Services</button>
+                    </div>
                     <div id="servicesList" class="items-container">
                         <p class="empty-message">No services added yet. Add your first service above!</p>
                     </div>
@@ -80,8 +100,8 @@
     </div>
 
 
-    <script src="js/config.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/services.js"></script>
+    <script src="js/config.js?v=20260420"></script>
+    <script src="js/dashboard.js?v=20260420"></script>
+    <script src="js/services.js?v=20260420"></script>
 </body>
 </html>

@@ -27,7 +27,6 @@ exports.createBrand = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("BRAND ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -45,6 +44,32 @@ exports.getAllBrands = async (req, res) => {
   }
 };
 
+exports.updateBrand = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+
+    const updateData = { name, description };
+
+    if (req.file) {
+      updateData.image = req.file.path;
+    }
+
+    const brand = await Brand.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    if (!brand) {
+      return res.status(404).json({ message: "Brand not found" });
+    }
+
+    res.json({ success: true, message: "Brand updated successfully", brand });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 /* ===============================
    DELETE BRAND

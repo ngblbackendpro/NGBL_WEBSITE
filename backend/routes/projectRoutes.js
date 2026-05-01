@@ -6,6 +6,7 @@ const upload = require("../middleware/upload"); // ✅ centralized multer
 const {
   createProject,
   getProjects,
+  updateProject,
   deleteProject,
 } = require("../controllers/projectController");
 
@@ -16,6 +17,8 @@ router.post("/", upload.single("image"), createProject);
 
 // GET PROJECTS
 router.get("/", getProjects);
+
+router.put('/:id', upload.single('image'), updateProject);
 
 // DELETE PROJECT
 router.delete("/:id", deleteProject);

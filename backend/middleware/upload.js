@@ -6,7 +6,8 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "ngbl_uploads",
-    allowed_formats: ["jpg", "png", "jpeg", "webp"]
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
+    transformation: [{ quality: "auto", fetch_format: "auto" }] 
   }
 });
 

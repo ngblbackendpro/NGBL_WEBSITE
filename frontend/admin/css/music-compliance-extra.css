@@ -1,0 +1,39 @@
+/* ── Music Compliance Extra Styles ────────────────────────────────── */
+/* Add these rules to the bottom of your existing dashboard.css file  */
+
+/* Section key badge shown on each card */
+.compliance-section-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+}
+
+/* Make select look consistent with other inputs */
+.form-group select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+.form-group select:disabled {
+    background: #f0f0f0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

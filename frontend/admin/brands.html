@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands - Admin Panel</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260420">
 </head>
 <body>
     <div class="admin-container">
@@ -25,6 +25,12 @@
                 <a href="team.html" class="nav-item">👥 Team Members</a>
                 <a href="services.html" class="nav-item">🛠️ Services</a>
                 <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="music-blogs.html" class="nav-item">🎵 Music Blogs</a>
+                <a href="testimonials.html" class="nav-item">💬 Testimonials</a>
+                <a href="music-media.html" class="nav-item">🎵 Music Media</a>
+                <a href="music-partners.html" class="nav-item active">🤝 Music Partners</a>
+                <a href="music-compliance.html" class="nav-item active">📋 Music Compliance</a>
+
                 <a href="index.html" class="nav-item logout">🚪 Logout</a>
             </nav>
         </aside>
@@ -74,9 +80,30 @@
             </section>
         </main>
     </div>
+    <!-- Edit Brand Modal -->
+<div id="editBrandModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:10px; width:450px; max-width:90%;">
+        <h3 style="margin-bottom:20px; color:#2c3e50;">✏️ Edit Brand</h3>
+        <div class="form-group">
+            <input type="text" id="editBrandName" placeholder="Brand Name" required>
+            <textarea id="editBrandDescription" placeholder="Brand Description (optional)" rows="3"></textarea>
+            <label class="file-input-label" id="editFileLabel">
+                📤 Change Logo (optional)
+                <input type="file" id="editBrandImage" accept="image/*">
+            </label>
+            <div id="editImagePreview" style="display:none; margin:10px 0;">
+                <img id="editPreviewImg" style="max-width:200px; max-height:200px; border-radius:8px; border:1px solid #ddd;">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="btn" onclick="submitEditBrand()">✔ Save Changes</button>
+                <button class="btn" style="background:#dc3545;" onclick="closeEditModal()">✕ Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script src="js/config.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/brands.js"></script>
+    <script src="js/config.js?v=20260420"></script>
+    <script src="js/dashboard.js?v=20260420"></script>
+    <script src="js/brands.js?v=20260420"></script>
 </body>
 </html>

@@ -62,8 +62,22 @@ function loadComponent(id, file) {
         return;
     }
 
-    const COMPONENT_CACHE_VERSION = "v3";
-    const cacheKey = `component-cache:${COMPONENT_CACHE_VERSION}:${file}`;
+    const COMPONENT_CACHE_VERSION = "v5";
+    const COMPONENT_FILE_VERSION = "20260420";
+    if (window.sessionStorage) {
+        const storedVersion = sessionStorage.getItem("component-cache-version");
+        if (storedVersion !== COMPONENT_CACHE_VERSION) {
+            Object.keys(sessionStorage).forEach((key) => {
+                if (key.startsWith("component-cache:")) {
+                    sessionStorage.removeItem(key);
+                }
+            });
+            sessionStorage.setItem("component-cache-version", COMPONENT_CACHE_VERSION);
+        }
+    }
+
+    const cacheKey = `component-cache:${COMPONENT_CACHE_VERSION}:${COMPONENT_FILE_VERSION}:${file}`;
+    const componentUrl = `${file}?v=${COMPONENT_FILE_VERSION}`;
     const cachedMarkup = window.sessionStorage ? sessionStorage.getItem(cacheKey) : null;
 
     if (window.sessionStorage && !window.__legacyComponentCacheCleared) {
@@ -83,6 +97,7 @@ function loadComponent(id, file) {
 
         refreshMotionEnhancements();
         if (id === "header-container") {
+            initNavDropdowns();
             setActiveLink();
         }
     };
@@ -92,7 +107,7 @@ function loadComponent(id, file) {
         return;
     }
 
-    fetch(file)
+    fetch(componentUrl)
         .then(response => response.text())
         .then(data => {
             applyComponent(data);
@@ -143,15 +158,133 @@ function isPublicPage() {
 
 function setActiveLink() {
     const links = document.querySelectorAll(".nav-menu a");
-    const current = window.location.pathname.split("/").pop() || "index.html";
+    const current = normalizeNavPath(window.location.pathname.split("/").pop() || "index.html");
 
     links.forEach((link) => {
         const href = link.getAttribute("href") || "";
-        const normalized = href.split("#")[0];
+        const normalized = normalizeNavPath(href.split("#")[0]);
         if (normalized === current || (current === "" && normalized === "index.html")) {
             link.classList.add("active");
         }
     });
+
+    document.querySelectorAll(".nav-dropdown").forEach((dropdown) => {
+        const dropdownLinks = dropdown.querySelectorAll(".nav-dropdown-menu a");
+        const dropdownToggle = dropdown.querySelector(".nav-dropdown-toggle");
+        const hasActiveChild = Array.from(dropdownLinks).some((link) => link.classList.contains("active"));
+
+        if (hasActiveChild && dropdownToggle) {
+            dropdownToggle.classList.add("active");
+        }
+    });
+}
+
+function closeAllNavDropdowns(exceptDropdown) {
+    document.querySelectorAll(".nav-dropdown").forEach((dropdown) => {
+        if (exceptDropdown && dropdown === exceptDropdown) {
+            return;
+        }
+
+        dropdown.classList.remove("open");
+        const toggle = dropdown.querySelector(".nav-dropdown-toggle");
+        if (toggle) {
+            toggle.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+function initNavDropdowns() {
+    const dropdowns = document.querySelectorAll(".nav-dropdown");
+    if (!dropdowns.length) {
+        return;
+    }
+
+    dropdowns.forEach((dropdown) => {
+        const toggle = dropdown.querySelector(".nav-dropdown-toggle");
+        const menu = dropdown.querySelector(".nav-dropdown-menu");
+        if (!toggle || !menu || toggle.dataset.dropdownBound === "1") {
+            return;
+        }
+
+        toggle.dataset.dropdownBound = "1";
+        toggle.setAttribute("role", "button");
+        toggle.setAttribute("aria-expanded", "false");
+
+        toggle.addEventListener("click", (event) => {
+            event.preventDefault();
+            const isOpen = dropdown.classList.contains("open");
+
+            closeAllNavDropdowns(isOpen ? null : dropdown);
+
+            if (!isOpen) {
+                dropdown.classList.add("open");
+                toggle.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+    document.querySelectorAll(".nav-dropdown-menu a").forEach((link) => {
+        if (link.dataset.dropdownLinkBound === "1") {
+            return;
+        }
+
+        link.dataset.dropdownLinkBound = "1";
+        link.addEventListener("click", () => {
+            closeAllNavDropdowns();
+            const navToggle = document.getElementById("nav-toggle");
+            if (navToggle) {
+                navToggle.checked = false;
+            }
+        });
+    });
+
+    document.querySelectorAll(".nav-menu a:not(.nav-dropdown-toggle)").forEach((link) => {
+        if (link.dataset.navLinkCloseBound === "1") {
+            return;
+        }
+
+        link.dataset.navLinkCloseBound = "1";
+        link.addEventListener("click", () => {
+            closeAllNavDropdowns();
+            const navToggle = document.getElementById("nav-toggle");
+            if (navToggle) {
+                navToggle.checked = false;
+            }
+        });
+    });
+
+    if (!window.__navDropdownOutsideClickBound) {
+        document.addEventListener("click", (event) => {
+            const insideDropdown = event.target.closest(".nav-dropdown");
+            if (!insideDropdown) {
+                closeAllNavDropdowns();
+            }
+        });
+        window.__navDropdownOutsideClickBound = true;
+    }
+
+    if (!window.__navDropdownEscapeBound) {
+        document.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            closeAllNavDropdowns();
+            const navToggle = document.getElementById("nav-toggle");
+            if (navToggle) {
+                navToggle.checked = false;
+            }
+        });
+        window.__navDropdownEscapeBound = true;
+    }
+}
+
+function normalizeNavPath(path) {
+    try {
+        return decodeURIComponent((path || "").trim().toLowerCase());
+    } catch (error) {
+        return (path || "").trim().toLowerCase();
+    }
 }
 
 function isHomePage() {

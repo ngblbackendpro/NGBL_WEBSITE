@@ -1,6 +1,6 @@
 window.ADMIN_CONFIG = {
-    // BASE_URL: "http://localhost:5000",
-    BASE_URL: "https://ngbl-website.onrender.com",
+    BASE_URL: "http://localhost:5000",
+    // BASE_URL: "https://ngbl-website.onrender.com",
     API: {
         HOME: "/api/home",
         BRANDS: "/api/brands",
@@ -12,6 +12,9 @@ window.ADMIN_CONFIG = {
         WORKS: "/api/works",
         DASHBOARD: "/api/dashboard",
         CONTACT: "/api/contact",
-        LEGAL: "/api/legal"
+        LEGAL: "/api/legal",
+        FAQ: "/api/faqs",
+        PRIVACY: "/api/privacy",
+        TERMS: "/api/terms"
     }
 };

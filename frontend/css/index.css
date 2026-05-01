@@ -303,6 +303,68 @@ figcaption.work-overlay {
     margin-top: 60px;
 }
 
+.view-more-dropdown {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.view-more-dropdown > summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.view-more-dropdown > summary::-webkit-details-marker {
+    display: none;
+}
+
+.view-more-dropdown[open] .view-more-btn i {
+    transform: rotate(180deg);
+}
+
+.view-more-dropdown-menu {
+    position: static;
+    transform: none;
+    min-width: 220px;
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 18px;
+    background: rgba(10, 10, 10, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(16px);
+    z-index: 20;
+}
+
+.view-more-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.view-more-dropdown-menu a:hover {
+    background: rgba(139, 92, 246, 0.16);
+    color: var(--color-purple-light);
+    transform: translateX(3px);
+}
+
+.view-more-dropdown:not([open]) .view-more-dropdown-menu {
+    display: none;
+}
+
 .view-more-btn {
     display: inline-flex;
     align-items: center;
@@ -320,6 +382,10 @@ figcaption.work-overlay {
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
+}
+
+.view-more-dropdown > .view-more-btn {
+    width: auto;
 }
 
 .view-more-btn::before {
@@ -1632,6 +1698,7 @@ figcaption.work-overlay {
     }
     .logo img {
         height: 50px;
+       
     }
     /* Forms */
     .form-row {
@@ -1734,6 +1801,12 @@ figcaption.work-overlay {
         width: fit-content;
         padding: 14px 32px;
         font-size: 0.95rem;
+    }
+    .view-more-dropdown > .view-more-btn {
+        width: 100%;
+    }
+    .view-more-dropdown-menu {
+        min-width: 200px;
     }
     .submit-btn {
         padding: 13px 28px;
@@ -1862,6 +1935,17 @@ figcaption.work-overlay {
         padding: 16px 28px;
         font-size: 1rem;
         gap: 10px;
+        width: 100%;
+    }
+    .view-more-dropdown > .view-more-btn {
+        width: 100%;
+    }
+    .view-more-dropdown {
+        width: 100%;
+        max-width: 100%;
+    }
+    .view-more-dropdown-menu {
+        min-width: 100%;
         width: 100%;
     }
     .view-more-btn i {
@@ -2019,4 +2103,8 @@ figcaption.work-overlay {
 }
 
 
+
+.logo img {
+    margin-top: 12px;
+}
 

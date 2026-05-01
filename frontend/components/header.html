@@ -12,11 +12,34 @@
             <nav class="navbar" role="navigation" aria-label="Main navigation">
                 <ul class="nav-menu">
                     <li><a href="index.html" title="Home">Home</a></li>
-                    <li><a href="aboutus.html" title="About Us">About</a></li>
-                    <li><a href="services.html" title="Our Services">Services</a></li>
-                    <li><a href="projects.html" title="Our Projects & Portfolio">Projects</a></li>
+                    <li class="nav-dropdown">
+                        <a href="about.html" class="nav-dropdown-toggle" aria-expanded="false" aria-label="About menu">
+                            <span>About</span>
+                        </a>
+                        
+                    </li>
+                    <li class="nav-dropdown">
+                        <a href="#" class="nav-dropdown-toggle" aria-expanded="false" aria-label="Services menu">
+                            <span>Services</span>
+                            <i class="fas fa-chevron-down dropdown-caret" aria-hidden="true"></i>
+                        </a>
+                        <div class="nav-dropdown-menu" aria-label="Services submenu">
+                            <a href="all-services.html?dept=IT" title="IT Services">IT Services</a>
+                            <a href="all-services.html?dept=Music" title="Music Services">Music Services</a>
+                        </div>
+                    </li>
+                    <li class="nav-dropdown">
+                        <a href="#" class="nav-dropdown-toggle" aria-expanded="false" aria-label="Projects menu">
+                            <span>Projects</span>
+                            <i class="fas fa-chevron-down dropdown-caret" aria-hidden="true"></i>
+                        </a>
+                        <div class="nav-dropdown-menu" aria-label="Projects submenu">
+                            <a href="all-projects.html?dept=IT" title="IT Projects">IT Projects</a>
+                            <a href="all-projects.html?dept=Music" title="Music Projects">Music Projects</a>
+                        </div>
+                    </li>
                     <li><a href="index.html?scroll=contact" title="Contact Us">Contact Us</a></li>
-                    <li><a href="subdomains.html" title="NGBL Subdomains">NGBL Subdomain</a></li>
+                    <li><a href="music.html" title="NGBL Music">NGBL Music</a></li>
                     <li class="nav-auth-container">
                         <a href="https://productivity-management.ngbl.in" class="nav-auth" title="Client Login">Login</a>
                         <span class="auth-divider">|</span>

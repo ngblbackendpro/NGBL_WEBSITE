@@ -27,11 +27,11 @@
     ExpiresByType image/webp "access plus 1 year"
     
     # CSS and JavaScript
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType text/javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/css "access plus 0 seconds"
+    ExpiresByType text/javascript "access plus 0 seconds"
+    ExpiresByType application/javascript "access plus 0 seconds"
     
-    # HTML - Short cache for dynamic content
+    # HTML - disable cache so content updates appear immediately
     ExpiresByType text/html "access plus 0 seconds"
     
     # Web fonts
@@ -55,6 +55,13 @@
     Header set Cache-Control "no-cache, no-store, must-revalidate" env=SOCIAL_CRAWLER
     Header set Pragma "no-cache" env=SOCIAL_CRAWLER
     Header set Expires "0" env=SOCIAL_CRAWLER
+
+    # Force fresh HTML/CSS/JS responses to avoid stale browser cache
+    <FilesMatch "\.(html|htm|css|js|webmanifest)$">
+        Header always set Cache-Control "no-cache, no-store, must-revalidate"
+        Header always set Pragma "no-cache"
+        Header always set Expires "0"
+    </FilesMatch>
     
     # Security Headers
     Header always set X-Content-Type-Options "nosniff"

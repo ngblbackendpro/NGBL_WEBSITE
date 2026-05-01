@@ -6,6 +6,7 @@ const upload = require("../middleware/upload"); // ✅ centralized multer (memor
 const {
   createBrand,
   getAllBrands,
+  updateBrand,
   deleteBrand
 } = require("../controllers/brandController");
 
@@ -16,6 +17,8 @@ router.post("/", upload.single("image"), createBrand);
 
 // GET ALL BRANDS
 router.get("/", getAllBrands);
+
+router.put("/:id", upload.single("image"), updateBrand);
 
 // DELETE BRAND
 router.delete("/:id", deleteBrand);

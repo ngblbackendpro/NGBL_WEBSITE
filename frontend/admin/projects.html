@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Admin Panel</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260420">
 </head>
 <body>
     <div class="admin-container">
@@ -25,6 +25,11 @@
                 <a href="team.html" class="nav-item">👥 Team Members</a>
                 <a href="services.html" class="nav-item">🛠️ Services</a>
                 <a href="projects.html" class="nav-item active">📁 Projects</a>
+                <a href="music-blogs.html" class="nav-item">🎵 Music Blogs</a>
+                <a href="testimonials.html" class="nav-item">💬 Testimonials</a>
+                <a href="music-media.html" class="nav-item">🎵 Music Media</a>
+                <a href="music-partners.html" class="nav-item active">🤝 Music Partners</a>
+                <a href="music-compliance.html" class="nav-item active">📋 Music Compliance</a>
                 <a href="index.html" class="nav-item logout">🚪 Logout</a>
             </nav>
         </aside>
@@ -42,50 +47,24 @@
             </header>
 
             <section class="dashboard-content">
-                <p class="subtitle">📁 Manage upcoming and completed projects</p>
-
-                <!-- Upcoming Projects Section -->
-                <div class="form-section">
-                    <h2>🚀 Upcoming Projects</h2>
-                    <form id="upcomingProjectForm" class="form-group">
-                        <input type="text" id="upcomingTitle" placeholder="Project Title" required>
-                        <input type="text" id="upcomingHeading" placeholder="Project Heading" required>
-                        <textarea id="upcomingDescription" placeholder="Project Description" rows="5" required></textarea>
-                        <input type="date" id="upcomingDate" placeholder="Expected Date" required>
-                        <label class="file-input-label" id="upcomingFileLabel">
-                            📤 Upload Project Photo
-                            <input type="file" id="upcomingImage" accept="image/*" required>
-                        </label>
-
-                        <div id="upcomingPreview" style="display:none; margin-top:10px;">
-                            <img id="upcomingPreviewImg"
-                                style="width:150px; height:150px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
-                                <div style="margin-top:8px;">
-                                <button type="button" id="upcomingChangeBtn" class="btn">✏ Change Image</button>
-                                <button type="button" id="upcomingCancelBtn" class="btn-delete">✕ Cancel</button>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn">✔ Add Upcoming Project</button>
-                    </form>
-
-                    <div id="upcomingList" class="items-container" style="margin-top: 20px;">
-                        <p class="empty-message">No upcoming projects added yet.</p>
-                    </div>
-                </div>
-
+                
                 <!-- Completed Projects Section -->
                 <div class="form-section">
                     <h2>✅ Completed Projects</h2>
                     <form id="completedProjectForm" class="form-group">
                         <input type="text" id="completedTitle" placeholder="Project Title" required>
                         <input type="text" id="completedHeading" placeholder="Project Heading" required>
+                        <select id="completedDepartment">
+                            <option value="">-- Select Department --</option>
+                            <option value="IT">IT</option>
+                            <option value="Music">Music</option>
+                        </select>
                         <textarea id="completedDescription" placeholder="Project Description" rows="5" required></textarea>
                         <input type="date" id="completedDate" placeholder="Completion Date" required>
                         <input type="url" id="completedLink" placeholder="Project Link" required>
                         <label class="file-input-label" id="completedFileLabel">
                         📤 Upload Project Photo
-                        <input type="file" id="completedImage" accept="image/*" required>
+                        <input type="file" id="completedImage" accept="image/*">
                     </label>
 
                     <div id="completedPreview" style="display:none; margin-top:10px;">
@@ -97,11 +76,64 @@
                         </div>
                     </div>
 
-                        <button type="submit" class="btn">✔ Add Completed Project</button>
+                        <div id="completedEditModeBar" style="display:none; background:#fff3cd; border:1px solid #ffc107; padding:10px 15px; border-radius:5px; margin-bottom:10px; color:#856404;">
+                            ✏️ You are editing a completed project. Submit to save changes.
+                        </div>
+                        <button type="submit" id="completedSubmitBtn" class="btn">✔ Add Completed Project</button>
+                        <button type="button" id="cancelCompletedEditBtn" style="display:none; background:#dc3545; color:white; border:none; padding:12px 20px; border-radius:5px; font-weight:600; cursor:pointer; margin-left:10px;" onclick="cancelProjectEdit('completed')">✕ Cancel Edit</button>
                     </form>
 
+                    <div class="dept-tabs" style="margin-top: 20px;">
+                        <button class="dept-tab active" data-dept="all" data-status="completed">✅ All Completed</button>
+                        <button class="dept-tab" data-dept="IT" data-status="completed">💻 IT</button>
+                        <button class="dept-tab" data-dept="Music" data-status="completed">🎵 Music</button>
+                    </div>
                     <div id="completedList" class="items-container" style="margin-top: 20px;">
                         <p class="empty-message">No completed projects added yet.</p>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Projects Section -->
+                <div class="form-section">
+                    <h2>🚀 Upcoming Projects</h2>
+                    <form id="upcomingProjectForm" class="form-group">
+                        <input type="text" id="upcomingTitle" placeholder="Project Title" required>
+                        <input type="text" id="upcomingHeading" placeholder="Project Heading" required>
+                        <select id="upcomingDepartment">
+                            <option value="">-- Select Department --</option>
+                            <option value="IT">IT</option>
+                            <option value="Music">Music</option>
+                        </select>
+                        <textarea id="upcomingDescription" placeholder="Project Description" rows="5" required></textarea>
+                        <input type="date" id="upcomingDate" placeholder="Expected Date" required>
+                        <label class="file-input-label" id="upcomingFileLabel">
+                            📤 Upload Project Photo
+                            <input type="file" id="upcomingImage" accept="image/*">
+                        </label>
+
+                        <div id="upcomingPreview" style="display:none; margin-top:10px;">
+                            <img id="upcomingPreviewImg"
+                                style="width:150px; height:150px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                                <div style="margin-top:8px;">
+                                <button type="button" id="upcomingChangeBtn" class="btn">✏ Change Image</button>
+                                <button type="button" id="upcomingCancelBtn" class="btn-delete">✕ Cancel</button>
+                            </div>
+                        </div>
+
+                        <div id="upcomingEditModeBar" style="display:none; background:#fff3cd; border:1px solid #ffc107; padding:10px 15px; border-radius:5px; margin-bottom:10px; color:#856404;">
+                            ✏️ You are editing an upcoming project. Submit to save changes.
+                        </div>
+                        <button type="submit" id="upcomingSubmitBtn" class="btn">✔ Add Upcoming Project</button>
+                        <button type="button" id="cancelUpcomingEditBtn" style="display:none; background:#dc3545; color:white; border:none; padding:12px 20px; border-radius:5px; font-weight:600; cursor:pointer; margin-left:10px;" onclick="cancelProjectEdit('upcoming')">✕ Cancel Edit</button>
+                    </form>
+
+                    <div class="dept-tabs" style="margin-top: 20px;">
+                        <button class="dept-tab active" data-dept="all" data-status="upcoming">🚀 All Upcoming</button>
+                        <button class="dept-tab" data-dept="IT" data-status="upcoming">💻 IT</button>
+                        <button class="dept-tab" data-dept="Music" data-status="upcoming">🎵 Music</button>
+                    </div>
+                    <div id="upcomingList" class="items-container" style="margin-top: 20px;">
+                        <p class="empty-message">No upcoming projects added yet.</p>
                     </div>
                 </div>
             </section>
@@ -109,8 +141,8 @@
     </div>
 
 
-    <script src="js/config.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/projects.js"></script>
+    <script src="js/config.js?v=20260420"></script>
+    <script src="js/dashboard.js?v=20260420"></script>
+    <script src="js/projects.js?v=20260420"></script>
 </body>
 </html>

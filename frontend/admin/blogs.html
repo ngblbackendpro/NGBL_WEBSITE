@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogs - Admin Panel</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260420">
     <style>
         .btn-secondary {
     background: rgba(34, 197, 94, 0.95);
@@ -51,6 +51,12 @@
                 <a href="team.html" class="nav-item">👥 Team Members</a>
                 <a href="services.html" class="nav-item">🛠️ Services</a>
                 <a href="projects.html" class="nav-item">📁 Projects</a>
+                <a href="music-blogs.html" class="nav-item">🎵 Music Blogs</a>
+                <a href="testimonials.html" class="nav-item">💬 Testimonials</a>
+                <a href="music-media.html" class="nav-item">🎵 Music Media</a>
+                <a href="music-partners.html" class="nav-item active">🤝 Music Partners</a>
+                <a href="music-compliance.html" class="nav-item active">📋 Music Compliance</a>
+
                 <a href="index.html" class="nav-item logout">🚪 Logout</a>
             </nav>
         </aside>
@@ -98,7 +104,11 @@
                         </div>
 
 
-                        <button type="submit" class="btn">✔ Publish Blog</button>
+                        <div id="editModeBar" style="display:none; background:#fff3cd; border:1px solid #ffc107; padding:10px 15px; border-radius:5px; margin-bottom:10px; color:#856404;">
+                            ✏️ You are editing a blog. Submit to save changes.
+                        </div>
+                        <button type="submit" id="blogSubmitBtn" class="btn">✔ Publish Blog</button>
+                        <button type="button" id="cancelBlogEditBtn" style="display:none;" class="btn" style="background:#dc3545; margin-left:10px;" onclick="cancelBlogEdit()">✕ Cancel Edit</button>
                     </form>
                 </div>
 
@@ -112,9 +122,10 @@
             </section>
         </main>
     </div>
+
     
-    <script src="js/config.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/blogs.js"></script>
+    <script src="js/config.js?v=20260420"></script>
+    <script src="js/dashboard.js?v=20260420"></script>
+    <script src="js/blogs.js?v=20260420"></script>
 </body>
 </html>

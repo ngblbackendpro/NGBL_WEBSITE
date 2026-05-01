@@ -45,20 +45,28 @@ function setupFormListener() {
             formData.append("image", imageFile);
 
             try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
+                const url = editingBlogId ? `${API_URL}/${editingBlogId}` : API_URL;
+                const method = editingBlogId ? "PUT" : "POST";
+
+                const response = await fetch(url, {
+                    method: method,
                     body: formData
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert('✔ Blog published successfully!');
-                    form.reset();
-                    blogSelectedImageData = null;
-                    document.getElementById('blogImagePreview').style.display = 'none';
-                    document.getElementById('blogFileLabel').style.display = 'block';
-                    displayBlogs();
+                alert(editingBlogId ? '✔ Blog updated successfully!' : '✔ Blog published successfully!');
+                form.reset();
+                blogSelectedImageData = null;
+                document.getElementById('blogImagePreview').style.display = 'none';
+                document.getElementById('blogFileLabel').style.display = 'block';
+                document.getElementById('blogSubmitBtn').textContent = '✔ Publish Blog';
+                document.getElementById('editModeBar').style.display = 'none';
+                document.getElementById('cancelBlogEditBtn').style.display = 'none';
+                editingBlogId = null;
+                displayBlogs();
+
                 } else {
                     alert(data.error || "Error publishing blog", 'error');
                 }
@@ -161,6 +169,7 @@ async function displayBlogs() {
 
                 <div class="item-actions">
                     <button class="btn-edit" onclick="viewBlog('${blog._id}')">👁️ View</button>
+                    <button class="btn-edit" onclick="openEditBlogModal('${blog._id}')">✏️ Edit</button>
                     <button class="btn-delete" onclick="deleteBlog('${blog._id}')">🗑️ Delete</button>
                 </div>
             `;
@@ -283,5 +292,66 @@ async function viewBlog(id) {
         showFlashMessage("Error loading blog", "error");
     }
 }
+
+// ===================================
+// EDIT BLOG - inline form
+// ===================================
+let editingBlogId = null;
+
+async function openEditBlogModal(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`);
+        const blog = await response.json();
+
+        if (!blog) { alert("Blog not found"); return; }
+
+        editingBlogId = id;
+
+        document.getElementById('blogTitle').value = blog.title || '';
+        document.getElementById('blogAuthor').value = blog.author || '';
+        document.getElementById('blogDate').value = blog.date ? blog.date.split('T')[0] : '';
+        document.getElementById('blogCategory').value = blog.category || '';
+        document.getElementById('blogDescription').value = blog.description || '';
+        document.getElementById('blogContent').value = blog.content || '';
+        document.getElementById('blogTags').value = blog.tags ? blog.tags.join(', ') : '';
+
+        // Show existing image preview
+        if (blog.image) {
+            document.getElementById('blogPreviewImg').src = blog.image;
+            document.getElementById('blogImagePreview').style.display = 'block';
+            document.getElementById('blogFileLabel').style.display = 'none';
+        }
+
+        // Update UI to edit mode
+        document.getElementById('blogSubmitBtn').textContent = '✔ Update Blog';
+        document.getElementById('editModeBar').style.display = 'block';
+        document.getElementById('cancelBlogEditBtn').style.display = 'inline-block';
+
+        // Scroll to form
+        setTimeout(() => {
+            document.getElementById('addBlogForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+
+    } catch (error) {
+        console.error("Error loading blog for edit:", error);
+        alert("Error loading blog");
+    }
+}
+
+function cancelBlogEdit() {
+    editingBlogId = null;
+    document.getElementById('addBlogForm').reset();
+    document.getElementById('blogImagePreview').style.display = 'none';
+    document.getElementById('blogFileLabel').style.display = 'block';
+    document.getElementById('blogSubmitBtn').textContent = '✔ Publish Blog';
+    document.getElementById('editModeBar').style.display = 'none';
+    document.getElementById('cancelBlogEditBtn').style.display = 'none';
+}
+
+window.openEditBlogModal = openEditBlogModal;
+window.cancelBlogEdit = cancelBlogEdit;
 
 })();

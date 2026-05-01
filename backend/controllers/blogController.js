@@ -53,6 +53,34 @@ exports.deleteBlog = async (req, res) => {
   }
 };
 
+exports.updateBlog = async (req, res) => {
+  try{
+     const { title, author, date, category, description, content, tags } = req.body;
+     const updateData = {
+            title,
+            author,
+            date,
+            category,
+            description,
+            content,
+            tags: tags ? tags.split(",").map(t => t.trim()).filter(Boolean) : []
+     };
+     if(req.file) {
+      updateData.image = req.file.path;
+     }
+     const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      {new: data}
+     );
+     if(!blog){
+      return res.status(404).json({message: "blog not found"});
+     }
+     res.json({message: "blog has updated", blog});
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  }
+};
 
 // GET SINGLE BLOG
 exports.getSingleBlog = async (req, res) => {

@@ -1,0 +1,24 @@
+/* ── Testimonials Admin Extra Styles ──────────────────────────────── */
+/* Add these rules to your existing dashboard.css file               */
+
+.testimonial-quote-icon {
+    font-size: 36px;
+    color: #667eea;
+    line-height: 1;
+    margin-bottom: 8px;
+    font-family: Georgia, serif;
+}
+
+.item-card .item-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.item-card .item-title {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 14px;
+}

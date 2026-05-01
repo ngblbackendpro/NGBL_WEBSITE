@@ -5,7 +5,7 @@
 
 .legal-page-main {
     min-height: calc(100vh - 200px);
-    padding: 136px 0 100px;
+    padding: 20px 0 100px;
     background:
         radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 28%),
         radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 24%),
@@ -105,4 +105,11 @@
     .legal-intro {
         font-size: 0.98rem;
     }
+}
+
+.compliance-nav-link.active {
+    color: white;
+    font-weight: 700;
+    border-left: 3px solid #667eea;
+    padding-left: 8px;
 }

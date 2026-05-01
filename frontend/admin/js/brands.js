@@ -135,9 +135,8 @@ async function displayBrands() {
                     <span>Added: ${new Date(brand.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div class="item-actions">
-                    <button class="btn-delete" onclick="deleteBrand('${brand._id}')">
-                        🗑️ Remove
-                    </button>
+                    <button class="btn-edit" onclick="openEditModal('${brand._id}', '${brand.name}', \`${brand.description || ''}\`)">✏️ Edit</button>
+                    <button class="btn-delete" onclick="deleteBrand('${brand._id}')">🗑️ Remove</button>
                 </div>
             `;
 
@@ -190,5 +189,91 @@ function resetImagePreview() {
     fileInputLabel.style.display = 'block';
     uploadBtn.style.display = 'inline-block';
 }
+
+// ===================================
+// EDIT BRAND
+// ===================================
+let editingBrandId = null;
+
+function openEditModal(id, name, description) {
+    editingBrandId = id;
+    document.getElementById("editBrandName").value = name;
+    document.getElementById("editBrandDescription").value = description;
+    document.getElementById("editImagePreview").style.display = "none";
+    document.getElementById("editBrandImage").value = "";
+
+    const modal = document.getElementById("editBrandModal");
+    modal.style.display = "flex";
+}
+
+function closeEditModal() {
+    editingBrandId = null;
+    document.getElementById("editBrandModal").style.display = "none";
+}
+
+async function submitEditBrand() {
+    if (!editingBrandId) return;
+
+    const name = document.getElementById("editBrandName").value.trim();
+    const description = document.getElementById("editBrandDescription").value.trim();
+    const imageFile = document.getElementById("editBrandImage").files[0];
+
+    if (!name) {
+        alert("Brand name is required");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    if (imageFile) {
+        formData.append("image", imageFile);
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/${editingBrandId}`, {
+            method: "PUT",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✔ Brand updated successfully!");
+            closeEditModal();
+            displayBrands();
+        } else {
+            alert(data.message || "Error updating brand");
+        }
+
+    } catch (error) {
+        console.error("Edit Brand Error:", error);
+        alert("Server error");
+    }
+}
+
+// Image preview for edit modal
+document.addEventListener("DOMContentLoaded", function () {
+    const editFileInput = document.getElementById("editBrandImage");
+    if (editFileInput) {
+        editFileInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const preview = document.getElementById("editPreviewImg");
+                    const previewDiv = document.getElementById("editImagePreview");
+                    preview.src = event.target.result;
+                    previewDiv.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+window.openEditModal = openEditModal;
+window.closeEditModal = closeEditModal;
+window.submitEditBrand = submitEditBrand;
 
 })();

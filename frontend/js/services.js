@@ -6,13 +6,34 @@ const API_URL = BASE_URL + window.APP_CONFIG.API.SERVICES;
 const ServicesModule = {
     config: {
         currentCategory: 'all',
-        animationDelay: 50
+        animationDelay: 50,
+        categoryAliases: {
+            strategy: ['strategy', 'brand strategy', 'branding', 'positioning', 'market research'],
+            digital: ['digital', 'seo', 'social media', 'performance', 'ppc', 'web', 'website', 'technology', 'it'],
+            creative: ['creative', 'design', 'content', 'video', 'graphic', 'copywriting', 'ui', 'ux'],
+            consulting: ['consulting', 'consultancy', 'advisory', 'business', 'operations', 'management']
+        }
     },
 
     elements: {
         categoryTabs: null,
         servicesGrid: null
     },
+    applyDeptFromURL() {
+    const dept = new URLSearchParams(window.location.search).get("dept");
+    if (!dept) return;
+
+    const cards = document.querySelectorAll(".service-card-modern");
+    cards.forEach(card => {
+        const cardDept = (card.dataset.department || "").toLowerCase();
+        if (cardDept === dept.toLowerCase()) {
+            card.style.display = "flex";
+            card.classList.add("is-visible");
+        } else {
+            card.style.display = "none";
+        }
+    });
+},
 
     async init() {
         this.cacheElements();
@@ -23,6 +44,15 @@ const ServicesModule = {
     cacheElements() {
         this.elements.categoryTabs = document.querySelectorAll('.category-tab');
         this.elements.servicesGrid = document.getElementById('servicesGrid');
+    },
+
+    normalizeText(value) {
+        return (value || '')
+            .toString()
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
     },
 
     async loadServices() {
@@ -41,8 +71,20 @@ const ServicesModule = {
             services.forEach((service, index) => {
                 const card = document.createElement("article");
                 card.className = "service-card-modern";
-                card.setAttribute("data-category", service.category || "all");
-                card.setAttribute("role", "listitem");
+                const normalizedCategory = this.normalizeText(service.category || 'all');
+                const normalizedKeywords = this.normalizeText(
+                    service.keywords ? service.keywords.join(', ') : ''
+                );
+                const normalizedTitle = this.normalizeText(service.title || '');
+                const normalizedDescription = this.normalizeText(service.description || '');
+
+                card.setAttribute("data-category", normalizedCategory);
+                card.setAttribute("data-department", (service.serviceDepartment || "").toLowerCase());
+                card.setAttribute("data-keywords", normalizedKeywords);
+                card.setAttribute(
+                    "data-search",
+                    [normalizedCategory, normalizedKeywords, normalizedTitle, normalizedDescription].join(' ')
+                );
 
                 card.innerHTML = `
                     <div class="service-icon-modern">
@@ -94,6 +136,13 @@ const ServicesModule = {
                 this.elements.servicesGrid.appendChild(card);
             });
 
+            const dept = new URLSearchParams(window.location.search).get("dept");
+            if (dept) {
+                this.applyDeptFromURL();
+            } else {
+                this.filterServices();
+            }
+
         } catch (error) {
             console.error("Error loading services:", error);
             this.elements.servicesGrid.innerHTML =
@@ -118,19 +167,28 @@ const ServicesModule = {
 
     filterServices() {
         const cards = document.querySelectorAll(".service-card-modern");
-        const category = this.config.currentCategory;
+        const category = this.normalizeText(this.config.currentCategory);
+        const aliasTerms = this.config.categoryAliases[category] || [category];
 
         cards.forEach(card => {
-            const cardCategory = card.dataset.category;
+            const cardCategory = this.normalizeText(card.dataset.category || '');
+            const searchableText = this.normalizeText(card.dataset.search || '');
 
-            if (category === "all" || cardCategory === category) {
+            const isMatch = aliasTerms.some(term => {
+                const normalizedTerm = this.normalizeText(term);
+                return normalizedTerm && searchableText.includes(normalizedTerm);
+            });
+
+            if (category === "all" || cardCategory === category || isMatch) {
                 card.style.display = "flex";
+                card.classList.add("is-visible");
             } else {
                 card.style.display = "none";
             }
         });
     }
 };
+
 
 document.addEventListener("DOMContentLoaded", () => {
     ServicesModule.init();

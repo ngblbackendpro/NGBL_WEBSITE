@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
+const port = process.env.PORT || 5000;
 const blogRoutes = require("./routes/blogRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
@@ -14,9 +15,14 @@ const homeRoutes = require('./routes/homeRoutes');
 const contactRoutes = require("./routes/contactRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const legalRoutes = require("./routes/legalPageRoutes");
-const port = process.env.PORT || 5000;;
 const connectDB = require("./config/db");
 const authRoutes = require('./routes/authRoutes')
+const musicBlogRoutes = require('./routes/musicBlogRoute');
+const musicContactRoutes = require('./routes/musicContactRoute');
+const musicComplianceRoutes = require('./routes/musicComplianceRoutes');
+const testimonialRoutes = require('./routes/testimonialRoutes');
+const musicMediaRoutes = require('./routes/musicMediaRoutes');
+const musicPartnersRoutes = require('./routes/musicPartnersRoutes');
 
 
 connectDB();
@@ -61,7 +67,12 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/legal", legalRoutes);
 app.use("/api/auth", authRoutes)
-
+app.use('/api/musicBlog', musicBlogRoutes);
+app.use('/api/musicContact', musicContactRoutes);
+app.use('/api/musicCompliance', musicComplianceRoutes)
+app.use('/api/testimonial', testimonialRoutes);
+app.use('/api/musicMedia', musicMediaRoutes);
+app.use('/api/musicPartner', musicPartnersRoutes);
 
 
 app.listen(port, ()=>{
